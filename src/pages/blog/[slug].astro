@@ -1,0 +1,86 @@
+---
+import { getCollection, render } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import CTASection from '../../components/CTASection.astro';
+import { BUSINESS } from '../../lib/business';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const formattedDate = post.data.publishDate.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+
+const wordCount = post.body?.split(/\s+/).filter(Boolean).length ?? 0;
+const readingMinutes = Math.max(1, Math.round(wordCount / 200));
+
+const postUrl = `${BUSINESS.siteUrl}/blog/${post.id}`;
+
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: post.data.title,
+  description: post.data.description,
+  datePublished: post.data.publishDate.toISOString(),
+  dateModified: (post.data.updatedDate ?? post.data.publishDate).toISOString(),
+  author: { '@type': 'Organization', name: BUSINESS.name },
+  publisher: { '@type': 'Organization', name: BUSINESS.name },
+  mainEntityOfPage: postUrl,
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: BUSINESS.siteUrl },
+    { '@type': 'ListItem', position: 2, name: 'Blog', item: `${BUSINESS.siteUrl}/blog` },
+    { '@type': 'ListItem', position: 3, name: post.data.title, item: postUrl },
+  ],
+};
+---
+
+<Layout title={`${post.data.title} | Pool Tidal Blog`} description={post.data.description}>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(articleSchema)} />
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbSchema)} />
+
+  <article class="mx-auto max-w-3xl px-6 py-16">
+    <nav class="text-sm text-muted">
+      <a href="/" class="hover:text-primary">Home</a> /
+      <a href="/blog" class="hover:text-primary">Blog</a>
+    </nav>
+
+    <div class="mt-4 flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-wide text-muted-soft">
+      <span>{formattedDate}</span>
+      <span aria-hidden="true">&middot;</span>
+      <span>{readingMinutes} min read</span>
+    </div>
+
+    <h1 class="mt-3 font-display text-3xl font-semibold text-ink md:text-4xl">{post.data.title}</h1>
+
+    {
+      post.data.tags.length > 0 && (
+        <div class="mt-4 flex flex-wrap gap-2">
+          {post.data.tags.map((tag) => (
+            <span class="rounded-full border border-line px-3 py-1 text-xs font-medium text-muted">{tag}</span>
+          ))}
+        </div>
+      )
+    }
+
+    <div class="prose mt-8">
+      <Content />
+    </div>
+  </article>
+
+  <CTASection />
+</Layout>

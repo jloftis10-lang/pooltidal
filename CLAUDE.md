@@ -32,6 +32,25 @@ both `getStaticPaths()`-driven off those arrays — adding a city or service to
 the data file is enough to generate its page, nav entries, footer links, and
 sitemap entry.
 
+## Blog
+
+`src/content/blog/*.md` is an Astro content collection (schema in
+`src/content.config.ts`, loader-based — Astro 5+ Content Layer API, not the
+legacy `content/config.ts` pattern). `src/pages/blog/index.astro` lists posts
+sorted newest-first; `src/pages/blog/[slug].astro` renders one via
+`getStaticPaths()` off the collection and emits its own `BlogPosting` +
+`BreadcrumbList` JSON-LD. Reading time is computed from word count at build
+time, not stored in frontmatter.
+
+Posts are written for SEO: a real, specific `description` (used as the meta
+description), internal links into the relevant `/services/*` and
+`/locations/*` pages, and a closing CTA into `/contact`. Keep that pattern
+for new posts rather than writing generic copy with no internal linking.
+
+Markdown body styling is the hand-rolled `.prose` block in `global.css`
+(headings/lists/links tied to the site's own tokens) — there's no
+`@tailwindcss/typography` dependency, so don't add markup that assumes it.
+
 ## SEO
 
 - `astro.config.mjs`'s `site` is the production domain — keep it in sync with
