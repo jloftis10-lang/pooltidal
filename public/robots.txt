@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://pooltidal.com/sitemap-index.xml
+Sitemap: https://www.pooltidal.com/sitemap-index.xml

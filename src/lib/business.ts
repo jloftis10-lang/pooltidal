@@ -6,5 +6,5 @@ export const BUSINESS = {
   email: 'jloftis10@gmail.com',
   emailHref: 'mailto:jloftis10@gmail.com',
   serviceRegion: 'San Diego County, CA',
-  siteUrl: 'https://pooltidal.com',
+  siteUrl: 'https://www.pooltidal.com',
 } as const;
