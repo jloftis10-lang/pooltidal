@@ -28,6 +28,7 @@ const localBusinessSchema = {
   })),
   image: `${BUSINESS.siteUrl}/logo-full.png`,
   logo: `${BUSINESS.siteUrl}/logo-full.png`,
+  sameAs: [BUSINESS.twitterUrl],
 };
 ---
 
@@ -50,6 +51,7 @@ const localBusinessSchema = {
     <meta property="og:image" content={`${BUSINESS.siteUrl}/logo-full.png`} />
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:image" content={`${BUSINESS.siteUrl}/logo-full.png`} />
+    <meta name="twitter:site" content="@pooltidal" />
 
     <script type="application/ld+json" is:inline set:html={JSON.stringify(localBusinessSchema)} />
   </head>

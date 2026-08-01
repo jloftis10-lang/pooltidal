@@ -2,6 +2,7 @@
 import { BUSINESS } from '../lib/business';
 import { SERVICES } from '../lib/services';
 import { LOCATIONS } from '../lib/locations';
+import Icon from './Icon.astro';
 
 const year = new Date().getFullYear();
 const featuredLocations = LOCATIONS.slice(0, 10);
@@ -23,6 +24,15 @@ const featuredLocations = LOCATIONS.slice(0, 10);
       <p class="text-sm">
         <a href={BUSINESS.emailHref} class="font-medium text-ink hover:text-primary">{BUSINESS.email}</a>
       </p>
+      <a
+        href={BUSINESS.twitterUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`${BUSINESS.name} on X`}
+        class="mt-4 inline-flex h-9 w-9 items-center justify-center rounded-full border border-line text-ink hover:border-primary hover:text-primary"
+      >
+        <Icon name="x" class="h-4 w-4" />
+      </a>
     </div>
 
     <div>
