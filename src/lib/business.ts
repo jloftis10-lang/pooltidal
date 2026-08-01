@@ -9,4 +9,5 @@ export const BUSINESS = {
   siteUrl: 'https://www.pooltidal.com',
   twitterUrl: 'https://x.com/pooltidal',
   instagramUrl: 'https://www.instagram.com/pooltidal/',
+  facebookUrl: 'https://www.facebook.com/profile.php?id=61592865894686',
 } as const;
