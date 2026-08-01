@@ -1,0 +1,75 @@
+---
+// Original CSS/SVG "glistening water" effect — no stock photo, no licensing
+// risk. Base teal gradient + an SVG feTurbulence filter panned over time to
+// fake moving light caustics, screened on top so it only adds highlights.
+interface Props {
+  class?: string;
+}
+
+const { class: className = '' } = Astro.props;
+---
+
+<div class={`pool-water absolute inset-0 overflow-hidden ${className}`} aria-hidden="true">
+  <svg class="h-full w-full" preserveAspectRatio="xMidYMid slice">
+    <defs>
+      <filter id="caustics" x="-20%" y="-20%" width="140%" height="140%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.045 0.09" numOctaves="2" seed="11" result="noise">
+          <animate attributeName="baseFrequency" values="0.045 0.09;0.05 0.1;0.045 0.09" dur="18s" repeatCount="indefinite" />
+        </feTurbulence>
+        <feOffset in="noise" dx="0" dy="0" result="panned">
+          <animate attributeName="dx" values="0;80;0;-80;0" dur="30s" repeatCount="indefinite" />
+          <animate attributeName="dy" values="0;40;0;-40;0" dur="24s" repeatCount="indefinite" />
+        </feOffset>
+        <!-- Steep matrix: only the brightest noise peaks survive, as small sparkle points -->
+        <feColorMatrix
+          in="panned"
+          type="matrix"
+          values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 40 -35"
+          result="glints"
+        />
+        <feComposite in="glints" in2="SourceGraphic" operator="in" />
+      </filter>
+
+      <linearGradient id="pool-base" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#083c45" />
+        <stop offset="40%" stop-color="#0b6e7c" />
+        <stop offset="75%" stop-color="#12879a" />
+        <stop offset="100%" stop-color="#1aa1b8" />
+      </linearGradient>
+    </defs>
+
+    <rect width="100%" height="100%" fill="url(#pool-base)" />
+
+    <!-- Ripple contour lines so the surface unambiguously reads as water, not just noise -->
+    <g stroke="#ffffff" stroke-opacity="0.12" stroke-width="1.5" fill="none">
+      <path d="M-50 120 Q 150 90 350 120 T 750 120 T 1150 120 T 1550 120">
+        <animate attributeName="d" dur="12s" repeatCount="indefinite"
+          values="M-50 120 Q 150 90 350 120 T 750 120 T 1150 120 T 1550 120;
+                  M-50 120 Q 150 150 350 120 T 750 120 T 1150 120 T 1550 120;
+                  M-50 120 Q 150 90 350 120 T 750 120 T 1150 120 T 1550 120" />
+      </path>
+      <path d="M-50 260 Q 200 230 400 260 T 800 260 T 1200 260 T 1600 260">
+        <animate attributeName="d" dur="16s" repeatCount="indefinite"
+          values="M-50 260 Q 200 230 400 260 T 800 260 T 1200 260 T 1600 260;
+                  M-50 260 Q 200 290 400 260 T 800 260 T 1200 260 T 1600 260;
+                  M-50 260 Q 200 230 400 260 T 800 260 T 1200 260 T 1600 260" />
+      </path>
+      <path d="M-50 420 Q 180 390 380 420 T 780 420 T 1180 420 T 1580 420">
+        <animate attributeName="d" dur="20s" repeatCount="indefinite"
+          values="M-50 420 Q 180 390 380 420 T 780 420 T 1180 420 T 1580 420;
+                  M-50 420 Q 180 450 380 420 T 780 420 T 1180 420 T 1580 420;
+                  M-50 420 Q 180 390 380 420 T 780 420 T 1180 420 T 1580 420" />
+      </path>
+      <path d="M-50 560 Q 220 530 420 560 T 820 560 T 1220 560 T 1620 560">
+        <animate attributeName="d" dur="14s" repeatCount="indefinite"
+          values="M-50 560 Q 220 530 420 560 T 820 560 T 1220 560 T 1620 560;
+                  M-50 560 Q 220 590 420 560 T 820 560 T 1220 560 T 1620 560;
+                  M-50 560 Q 220 530 420 560 T 820 560 T 1220 560 T 1620 560" />
+      </path>
+    </g>
+
+    <rect width="100%" height="100%" filter="url(#caustics)" class="mix-blend-screen opacity-90" />
+  </svg>
+
+  <div class="absolute inset-0 bg-gradient-to-t from-[#062a31]/75 via-[#062a31]/15 to-[#062a31]/25"></div>
+</div>

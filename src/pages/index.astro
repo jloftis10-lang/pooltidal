@@ -4,6 +4,7 @@ import ServiceCard from '../components/ServiceCard.astro';
 import LocationCard from '../components/LocationCard.astro';
 import CTASection from '../components/CTASection.astro';
 import Icon from '../components/Icon.astro';
+import PoolWaterBackground from '../components/PoolWaterBackground.astro';
 import { SERVICES } from '../lib/services';
 import { LOCATIONS } from '../lib/locations';
 import { BUSINESS } from '../lib/business';
@@ -22,40 +23,42 @@ const highlights = [
   title="Pool Tidal | San Diego Pool Cleaning, Repair & Service"
   description="Pool Tidal provides weekly pool cleaning, repair, and equipment installation across San Diego County — from Carlsbad to Chula Vista. Get a free quote."
 >
-  <section class="bg-canvas">
-    <div class="mx-auto grid max-w-6xl items-center gap-10 px-6 py-16 md:grid-cols-2 md:py-24">
+  <section class="relative overflow-hidden">
+    <PoolWaterBackground />
+
+    <div class="relative mx-auto grid max-w-6xl items-center gap-10 px-6 py-20 md:grid-cols-2 md:py-28">
       <div>
-        <span class="text-sm font-semibold uppercase tracking-wide text-primary">
+        <span class="text-sm font-semibold uppercase tracking-wide text-white/80">
           {BUSINESS.serviceRegion}
         </span>
-        <h1 class="mt-3 font-display text-4xl font-semibold leading-tight text-ink md:text-5xl">
+        <h1 class="mt-3 font-display text-4xl font-semibold leading-tight text-white md:text-5xl">
           Pool cleaning &amp; service you don't have to think about.
         </h1>
-        <p class="mt-4 text-lg text-muted">
+        <p class="mt-4 text-lg text-white/85">
           Weekly cleanings, repairs, and equipment upgrades for homes across San Diego County. One
           call, one reliable tech, a pool that's always ready.
         </p>
         <div class="mt-8 flex flex-wrap gap-4">
           <a
             href="/contact"
-            class="rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white hover:bg-primary-dark"
+            class="rounded-full bg-accent-strong px-6 py-3 text-sm font-semibold text-white hover:opacity-90"
           >
             Get a Free Quote
           </a>
           <a
             href={BUSINESS.phoneHref}
-            class="rounded-full border border-line px-6 py-3 text-sm font-semibold text-ink hover:border-primary hover:text-primary"
+            class="rounded-full border border-white/40 px-6 py-3 text-sm font-semibold text-white hover:bg-white/10"
           >
             Call {BUSINESS.phone}
           </a>
         </div>
       </div>
 
-      <ul class="grid gap-4 rounded-2xl border border-line bg-surface p-6">
+      <ul class="grid gap-4 rounded-2xl border border-white/25 bg-white/10 p-6 backdrop-blur-sm">
         {
           highlights.map((item) => (
-            <li class="flex items-start gap-3 text-sm text-ink">
-              <Icon name="check" class="mt-0.5 h-5 w-5 flex-shrink-0 text-primary" />
+            <li class="flex items-start gap-3 text-sm text-white">
+              <Icon name="check" class="mt-0.5 h-5 w-5 flex-shrink-0 text-white" />
               {item}
             </li>
           ))

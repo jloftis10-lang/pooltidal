@@ -13,6 +13,9 @@
  *   - accent is decorative (icons, underlines, badges) — do not put small
  *     text directly on an accent background; pair accent with `ink` text
  *     or use it as a border/icon color instead.
+ *   - accent-strong (white text, ~4.65:1) is for CTA button backgrounds
+ *     that need to carry white text at normal sizes — accent itself does
+ *     not clear 4.5:1 with white text below large/bold sizes.
  */
 @theme {
   --color-canvas: #f5fafb;
@@ -24,6 +27,7 @@
   --color-muted: #4b6670;
   --color-muted-soft: #6b838c;
   --color-accent: #e0762e;
+  --color-accent-strong: #b85a1e;
 
   --font-display: 'Outfit Variable', ui-sans-serif, system-ui, sans-serif;
   --font-body: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
