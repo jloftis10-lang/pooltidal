@@ -1,0 +1,36 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/outfit';
+
+/*
+ * "Coastal Tide" palette — blues/teals for trust + a warm coral accent,
+ * fitting a San Diego pool service brand. Contrast checked against WCAG AA
+ * (4.5:1 body text) at pick time:
+ *   - primary on canvas/surface: ~5.6:1 / ~5.9:1 (white text on primary)
+ *   - muted on canvas: ~5.8:1
+ *   - muted-soft on canvas: ~3.8:1 — large text / labels / badges ONLY
+ *     (3:1 threshold), never body copy. Use `muted` for paragraphs.
+ *   - accent is decorative (icons, underlines, badges) — do not put small
+ *     text directly on an accent background; pair accent with `ink` text
+ *     or use it as a border/icon color instead.
+ */
+@theme {
+  --color-canvas: #f5fafb;
+  --color-surface: #ffffff;
+  --color-line: #dceaee;
+  --color-primary: #0b6e7c;
+  --color-primary-dark: #084f59;
+  --color-ink: #10262e;
+  --color-muted: #4b6670;
+  --color-muted-soft: #6b838c;
+  --color-accent: #e0762e;
+
+  --font-display: 'Outfit Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-body: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+}
+
+body {
+  background-color: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+}

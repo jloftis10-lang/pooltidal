@@ -1,0 +1,104 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import LocationCard from '../components/LocationCard.astro';
+import CTASection from '../components/CTASection.astro';
+import Icon from '../components/Icon.astro';
+import { SERVICES } from '../lib/services';
+import { LOCATIONS } from '../lib/locations';
+import { BUSINESS } from '../lib/business';
+
+const featuredLocations = LOCATIONS.slice(0, 8);
+
+const highlights = [
+  'Locally based, serving San Diego County',
+  'Clear, itemized pricing before any repair work',
+  'The same tech visits your pool each time',
+  'Weekly cleaning plans, repairs, and equipment upgrades',
+];
+---
+
+<Layout
+  title="Pool Tidal | San Diego Pool Cleaning, Repair & Service"
+  description="Pool Tidal provides weekly pool cleaning, repair, and equipment installation across San Diego County — from Carlsbad to Chula Vista. Get a free quote."
+>
+  <section class="bg-canvas">
+    <div class="mx-auto grid max-w-6xl items-center gap-10 px-6 py-16 md:grid-cols-2 md:py-24">
+      <div>
+        <span class="text-sm font-semibold uppercase tracking-wide text-primary">
+          {BUSINESS.serviceRegion}
+        </span>
+        <h1 class="mt-3 font-display text-4xl font-semibold leading-tight text-ink md:text-5xl">
+          Pool cleaning &amp; service you don't have to think about.
+        </h1>
+        <p class="mt-4 text-lg text-muted">
+          Weekly cleanings, repairs, and equipment upgrades for homes across San Diego County. One
+          call, one reliable tech, a pool that's always ready.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-4">
+          <a
+            href="/contact"
+            class="rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white hover:bg-primary-dark"
+          >
+            Get a Free Quote
+          </a>
+          <a
+            href={BUSINESS.phoneHref}
+            class="rounded-full border border-line px-6 py-3 text-sm font-semibold text-ink hover:border-primary hover:text-primary"
+          >
+            Call {BUSINESS.phone}
+          </a>
+        </div>
+      </div>
+
+      <ul class="grid gap-4 rounded-2xl border border-line bg-surface p-6">
+        {
+          highlights.map((item) => (
+            <li class="flex items-start gap-3 text-sm text-ink">
+              <Icon name="check" class="mt-0.5 h-5 w-5 flex-shrink-0 text-primary" />
+              {item}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-6 py-16">
+    <div class="flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <h2 class="font-display text-2xl font-semibold text-ink md:text-3xl">What we do</h2>
+        <p class="mt-2 text-muted">From routine cleanings to full equipment replacement.</p>
+      </div>
+      <a href="/services" class="text-sm font-medium text-primary hover:text-primary-dark">
+        View all services &rarr;
+      </a>
+    </div>
+
+    <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {SERVICES.map((service) => <ServiceCard service={service} />)}
+    </div>
+  </section>
+
+  <section class="bg-surface">
+    <div class="mx-auto max-w-6xl px-6 py-16">
+      <div class="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <h2 class="font-display text-2xl font-semibold text-ink md:text-3xl">Where we service</h2>
+          <p class="mt-2 text-muted">
+            Serving {LOCATIONS.length} cities and communities across San Diego County.
+          </p>
+        </div>
+        <a href="/locations" class="text-sm font-medium text-primary hover:text-primary-dark">
+          View all {LOCATIONS.length} areas &rarr;
+        </a>
+      </div>
+
+      <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {featuredLocations.map((location) => <LocationCard location={location} />)}
+      </div>
+    </div>
+  </section>
+
+  <CTASection />
+</Layout>

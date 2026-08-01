@@ -1,0 +1,48 @@
+---
+import Layout from '../layouts/Layout.astro';
+import CTASection from '../components/CTASection.astro';
+import { BUSINESS } from '../lib/business';
+import { LOCATIONS } from '../lib/locations';
+---
+
+<Layout
+  title="About Pool Tidal | San Diego Pool Service"
+  description="Pool Tidal provides pool cleaning, repair, and equipment service across San Diego County, with a focus on consistent techs and clear pricing."
+>
+  <section class="mx-auto max-w-3xl px-6 py-16">
+    <span class="text-sm font-semibold uppercase tracking-wide text-primary">About</span>
+    <h1 class="mt-3 font-display text-3xl font-semibold text-ink md:text-4xl">About Pool Tidal</h1>
+
+    <p class="mt-6 text-lg text-muted">
+      Pool Tidal is a pool cleaning and service company based in San Diego County. We run weekly
+      maintenance routes, handle repairs and equipment upgrades, and bring neglected pools back to
+      swim-ready condition — for homeowners across {LOCATIONS.length} cities and communities from
+      the coast to the inland valleys.
+    </p>
+
+    <h2 class="mt-10 font-display text-xl font-semibold text-ink">How we work</h2>
+    <p class="mt-4 text-muted">
+      We keep routes tight by region so the same technician gets to know your pool over time,
+      instead of a different person showing up each week. Repair and equipment quotes are itemized
+      before any work begins — no surprise line items after the fact.
+    </p>
+
+    <h2 class="mt-10 font-display text-xl font-semibold text-ink">Where we work</h2>
+    <p class="mt-4 text-muted">
+      We currently service {LOCATIONS.length} cities and communities across San Diego County.
+      <a href="/locations" class="font-medium text-primary hover:text-primary-dark">
+        See the full list of service areas
+      </a>
+      or
+      <a href="/contact" class="font-medium text-primary hover:text-primary-dark">reach out</a>
+      if you don't see your neighborhood listed — we're adding areas regularly.
+    </p>
+
+    <p class="mt-10 text-sm text-muted-soft">
+      Questions before booking? Call {BUSINESS.phone} or email
+      <a href={BUSINESS.emailHref} class="text-primary hover:text-primary-dark">{BUSINESS.email}</a>.
+    </p>
+  </section>
+
+  <CTASection />
+</Layout>

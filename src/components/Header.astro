@@ -1,0 +1,45 @@
+---
+import { BUSINESS } from '../lib/business';
+
+const navLinks = [
+  { href: '/services', label: 'Services' },
+  { href: '/locations', label: 'Service Areas' },
+  { href: '/about', label: 'About' },
+  { href: '/contact', label: 'Contact' },
+];
+---
+
+<header class="border-b border-line bg-surface">
+  <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-4">
+    <a href="/" class="font-display text-xl font-semibold text-primary">
+      {BUSINESS.name}
+    </a>
+
+    <nav class="hidden items-center gap-6 md:flex">
+      {
+        navLinks.map((link) => (
+          <a href={link.href} class="text-sm font-medium text-ink hover:text-primary">
+            {link.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <a
+      href={BUSINESS.phoneHref}
+      class="rounded-full bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary-dark"
+    >
+      {BUSINESS.phone}
+    </a>
+  </div>
+
+  <nav class="flex items-center gap-4 overflow-x-auto border-t border-line px-6 py-2 md:hidden">
+    {
+      navLinks.map((link) => (
+        <a href={link.href} class="whitespace-nowrap text-sm font-medium text-ink hover:text-primary">
+          {link.label}
+        </a>
+      ))
+    }
+  </nav>
+</header>

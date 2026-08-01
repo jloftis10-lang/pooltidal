@@ -1,0 +1,85 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Icon from '../../components/Icon.astro';
+import CTASection from '../../components/CTASection.astro';
+import { SERVICES } from '../../lib/services';
+import { LOCATIONS } from '../../lib/locations';
+
+export function getStaticPaths() {
+  return SERVICES.map((service) => ({
+    params: { slug: service.slug },
+    props: { service },
+  }));
+}
+
+const { service } = Astro.props;
+const otherServices = SERVICES.filter((s) => s.slug !== service.slug);
+const sampleLocations = LOCATIONS.slice(0, 12);
+---
+
+<Layout title={`${service.name} | Pool Tidal`} description={service.shortDesc}>
+  <section class="mx-auto max-w-4xl px-6 py-16">
+    <a href="/services" class="text-sm font-medium text-primary hover:text-primary-dark">&larr; All services</a>
+
+    <div class="mt-4 flex items-center gap-3">
+      <span class="flex h-12 w-12 items-center justify-center rounded-full bg-canvas text-primary">
+        <Icon name={service.icon} class="h-6 w-6" />
+      </span>
+      <h1 class="font-display text-3xl font-semibold text-ink md:text-4xl">{service.name}</h1>
+    </div>
+
+    <p class="mt-6 text-lg text-muted">{service.longDesc}</p>
+
+    <h2 class="mt-10 font-display text-xl font-semibold text-ink">What's included</h2>
+    <ul class="mt-4 space-y-3">
+      {
+        service.bullets.map((bullet) => (
+          <li class="flex items-start gap-3 text-ink">
+            <Icon name="check" class="mt-0.5 h-5 w-5 flex-shrink-0 text-primary" />
+            {bullet}
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="mt-10 rounded-2xl border border-line bg-surface p-6">
+      <h2 class="font-display text-lg font-semibold text-ink">Available across San Diego County</h2>
+      <p class="mt-2 text-sm text-muted">
+        We provide {service.name.toLowerCase()} in San Diego and surrounding communities, including:
+      </p>
+      <div class="mt-4 flex flex-wrap gap-2">
+        {
+          sampleLocations.map((location) => (
+            <a
+              href={`/locations/${location.slug}`}
+              class="rounded-full border border-line px-3 py-1 text-sm text-ink hover:border-primary hover:text-primary"
+            >
+              {location.name}
+            </a>
+          ))
+        }
+      </div>
+      <a href="/locations" class="mt-4 inline-block text-sm font-medium text-primary hover:text-primary-dark">
+        View all {LOCATIONS.length} service areas &rarr;
+      </a>
+    </div>
+
+    <div class="mt-12">
+      <h2 class="font-display text-lg font-semibold text-ink">Other services</h2>
+      <div class="mt-4 grid gap-4 sm:grid-cols-3">
+        {
+          otherServices.map((other) => (
+            <a
+              href={`/services/${other.slug}`}
+              class="rounded-xl border border-line bg-surface p-4 text-sm font-medium text-ink hover:border-primary hover:text-primary"
+            >
+              {other.name}
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CTASection />
+</Layout>

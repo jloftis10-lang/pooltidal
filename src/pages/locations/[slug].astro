@@ -1,0 +1,120 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Icon from '../../components/Icon.astro';
+import CTASection from '../../components/CTASection.astro';
+import { LOCATIONS, getNearbyLocations, REGION_LABELS } from '../../lib/locations';
+import { SERVICES } from '../../lib/services';
+import { BUSINESS } from '../../lib/business';
+
+export function getStaticPaths() {
+  return LOCATIONS.map((location) => ({
+    params: { slug: location.slug },
+    props: { location },
+  }));
+}
+
+const { location } = Astro.props;
+const nearby = getNearbyLocations(location.slug, 4);
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: BUSINESS.siteUrl },
+    { '@type': 'ListItem', position: 2, name: 'Service Areas', item: `${BUSINESS.siteUrl}/locations` },
+    {
+      '@type': 'ListItem',
+      position: 3,
+      name: location.name,
+      item: `${BUSINESS.siteUrl}/locations/${location.slug}`,
+    },
+  ],
+};
+---
+
+<Layout
+  title={`Pool Service in ${location.name}, CA | Pool Tidal`}
+  description={`Weekly pool cleaning, repair, and equipment service in ${location.name}, CA. Local techs, clear pricing, free quotes.`}
+>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbSchema)} />
+
+  <section class="mx-auto max-w-4xl px-6 py-16">
+    <nav class="text-sm text-muted">
+      <a href="/" class="hover:text-primary">Home</a> /
+      <a href="/locations" class="hover:text-primary">Service Areas</a> /
+      <span class="text-ink">{location.name}</span>
+    </nav>
+
+    <span class="mt-4 flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-primary">
+      <Icon name="map-pin" class="h-4 w-4" />
+      {REGION_LABELS[location.region]}
+    </span>
+    <h1 class="mt-3 font-display text-3xl font-semibold text-ink md:text-4xl">
+      Pool Cleaning &amp; Service in {location.name}, CA
+    </h1>
+    <p class="mt-4 text-lg text-muted">{location.about}</p>
+
+    <div class="mt-8 rounded-2xl border border-line bg-surface p-6">
+      <h2 class="font-display text-lg font-semibold text-ink">Pool care notes for {location.name}</h2>
+      <p class="mt-2 text-muted">{location.poolNote}</p>
+    </div>
+
+    <div class="mt-10 flex flex-wrap gap-4">
+      <a
+        href="/contact"
+        class="rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white hover:bg-primary-dark"
+      >
+        Get a Free Quote in {location.name}
+      </a>
+      <a
+        href={BUSINESS.phoneHref}
+        class="rounded-full border border-line px-6 py-3 text-sm font-semibold text-ink hover:border-primary hover:text-primary"
+      >
+        Call {BUSINESS.phone}
+      </a>
+    </div>
+
+    <div class="mt-14">
+      <h2 class="font-display text-xl font-semibold text-ink">Services available in {location.name}</h2>
+      <div class="mt-4 grid gap-4 sm:grid-cols-2">
+        {
+          SERVICES.map((service) => (
+            <a
+              href={`/services/${service.slug}`}
+              class="flex items-start gap-3 rounded-xl border border-line bg-surface p-4 hover:border-primary"
+            >
+              <Icon name={service.icon} class="mt-0.5 h-5 w-5 flex-shrink-0 text-primary" />
+              <div>
+                <p class="font-medium text-ink">{service.name}</p>
+                <p class="mt-1 text-sm text-muted">{service.shortDesc}</p>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+
+    {
+      nearby.length > 0 && (
+        <div class="mt-14">
+          <h2 class="font-display text-xl font-semibold text-ink">Also serving nearby</h2>
+          <div class="mt-4 flex flex-wrap gap-2">
+            {nearby.map((n) => (
+              <a
+                href={`/locations/${n.slug}`}
+                class="rounded-full border border-line px-4 py-2 text-sm text-ink hover:border-primary hover:text-primary"
+              >
+                {n.name}
+              </a>
+            ))}
+          </div>
+        </div>
+      )
+    }
+  </section>
+
+  <CTASection
+    heading={`Get a free pool service quote in ${location.name}`}
+    subheading="Tell us a bit about your pool and we'll follow up with a plan and pricing."
+  />
+</Layout>
