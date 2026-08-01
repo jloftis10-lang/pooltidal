@@ -1,18 +1,40 @@
 ---
-import { getCollection, render } from 'astro:content';
+import { getCollection, render, type CollectionEntry } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import CTASection from '../../components/CTASection.astro';
+import BlogCard from '../../components/BlogCard.astro';
 import { BUSINESS } from '../../lib/business';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => !data.draft);
-  return posts.map((post) => ({
-    params: { slug: post.id },
-    props: { post },
-  }));
+
+  return posts.map((post) => {
+    // Rank other posts by shared tags first, then recency, so "related" is
+    // never just "most recent" when there's an actual topical match.
+    const relatedPosts = posts
+      .filter((p) => p.id !== post.id)
+      .map((p) => ({
+        post: p,
+        sharedTags: p.data.tags.filter((tag) => post.data.tags.includes(tag)).length,
+      }))
+      .sort(
+        (a, b) =>
+          b.sharedTags - a.sharedTags || b.post.data.publishDate.valueOf() - a.post.data.publishDate.valueOf()
+      )
+      .slice(0, 3)
+      .map((r) => r.post);
+
+    return {
+      params: { slug: post.id },
+      props: { post, relatedPosts },
+    };
+  });
 }
 
-const { post } = Astro.props;
+const { post, relatedPosts } = Astro.props as {
+  post: CollectionEntry<'blog'>;
+  relatedPosts: CollectionEntry<'blog'>[];
+};
 const { Content } = await render(post);
 
 const formattedDate = post.data.publishDate.toLocaleDateString('en-US', {
@@ -85,6 +107,19 @@ const breadcrumbSchema = {
     <div class="prose mt-8">
       <Content />
     </div>
+
+    {
+      relatedPosts.length > 0 && (
+        <div class="mt-16 border-t border-line pt-10">
+          <h2 class="font-display text-xl font-semibold text-ink">Related articles</h2>
+          <div class="mt-6 grid gap-6 sm:grid-cols-3">
+            {relatedPosts.map((related) => (
+              <BlogCard post={related} />
+            ))}
+          </div>
+        </div>
+      )
+    }
   </article>
 
   <CTASection />

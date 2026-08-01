@@ -51,6 +51,12 @@ Markdown body styling is the hand-rolled `.prose` block in `global.css`
 (headings/lists/links tied to the site's own tokens) — there's no
 `@tailwindcss/typography` dependency, so don't add markup that assumes it.
 
+Each post page also shows a "Related articles" section, computed in
+`[slug].astro`'s `getStaticPaths()` by ranking other posts on shared `tags`
+first, then recency, taking the top 3. It's derived at build time from the
+`tags` frontmatter — there's nothing to maintain by hand when adding a post,
+just give it accurate tags.
+
 ## Logo
 
 `public/logo-full.png` is the real brand mark (a wave-badge icon + "Pool
@@ -74,11 +80,18 @@ without it being asked for again.
 - `Layout.astro` emits a sitewide `LocalBusiness` JSON-LD block (including
   `image`/`logo` pointing at `logo-full.png`) with `areaServed` generated
   from `LOCATIONS`; location pages add their own `BreadcrumbList` JSON-LD.
-- `og:image`/`twitter:image` currently point at `logo-full.png` as a
-  placeholder — it's square-ish and logo-only, not an ideal social-share
-  image. A real 1200×630 OG image (screenshot a styled HTML template, same
-  approach noted in the CBD Dog Guide project) is still worth generating
-  before launch.
+- `public/og-image.png` (1200×630, `og:image`/`twitter:image`, card type
+  `summary_large_image`) was generated the same way as the CBD Dog Guide
+  project's — a styled HTML template (teal gradient + caustics background,
+  the real logo, a headline and a service-area pill) screenshotted at exact
+  OG dimensions. Regenerate the same way if the headline/stat copy changes
+  materially. The `LocalBusiness` schema's `image`/`logo` fields still point
+  at `logo-full.png` on purpose — that's the actual brand mark, a separate
+  concern from the social-share preview image.
+- Blog post `<title>` tags only append `| Pool Tidal` when the post's own
+  headline leaves room under Google's ~60-char display cutoff (see the
+  `pageTitle` logic in `blog/[slug].astro`) — don't hardcode a suffix back
+  on there without re-checking length.
 
 ## Contact form
 
