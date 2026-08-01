@@ -51,15 +51,34 @@ Markdown body styling is the hand-rolled `.prose` block in `global.css`
 (headings/lists/links tied to the site's own tokens) — there's no
 `@tailwindcss/typography` dependency, so don't add markup that assumes it.
 
+## Logo
+
+`public/logo-full.png` is the real brand mark (a wave-badge icon + "Pool
+Tidal / Pool Service / San Diego, CA" wordmark baked into one image) —
+user-supplied art, background removed and cropped from the original. It's
+used as-is in `Header.astro` (h-16) and `Footer.astro` (h-24); `favicon.png`
+and `apple-touch-icon.png` are separate crops of just the icon (no
+wordmark), since the full lockup's tagline text is illegible below ~64px
+tall — don't drop `logo-full.png` into a small/icon-sized slot without
+re-testing legibility at that size first.
+
+The logo's blues are a **deliberately different color family** from the
+site's teal/coral "Coastal Tide" UI tokens (a considered choice, not an
+oversight) — don't try to reconcile them by recoloring one or the other
+without it being asked for again.
+
 ## SEO
 
 - `astro.config.mjs`'s `site` is the production domain — keep it in sync with
   `public/robots.txt`'s `Sitemap:` line if the domain changes.
-- `Layout.astro` emits a sitewide `LocalBusiness` JSON-LD block with
-  `areaServed` generated from `LOCATIONS`; location pages add their own
-  `BreadcrumbList` JSON-LD.
-- No `og-image.png` yet — generate one (screenshot a styled HTML template at
-  1200×630, same approach noted in the CBD Dog Guide project) before launch.
+- `Layout.astro` emits a sitewide `LocalBusiness` JSON-LD block (including
+  `image`/`logo` pointing at `logo-full.png`) with `areaServed` generated
+  from `LOCATIONS`; location pages add their own `BreadcrumbList` JSON-LD.
+- `og:image`/`twitter:image` currently point at `logo-full.png` as a
+  placeholder — it's square-ish and logo-only, not an ideal social-share
+  image. A real 1200×630 OG image (screenshot a styled HTML template, same
+  approach noted in the CBD Dog Guide project) is still worth generating
+  before launch.
 
 ## Contact form
 

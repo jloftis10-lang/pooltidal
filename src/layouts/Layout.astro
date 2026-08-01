@@ -26,6 +26,8 @@ const localBusinessSchema = {
     '@type': 'City',
     name: location.name,
   })),
+  image: `${BUSINESS.siteUrl}/logo-full.png`,
+  logo: `${BUSINESS.siteUrl}/logo-full.png`,
 };
 ---
 
@@ -34,7 +36,8 @@ const localBusinessSchema = {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="canonical" href={canonicalURL} />
 
     <title>{title}</title>
@@ -44,7 +47,9 @@ const localBusinessSchema = {
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={`${BUSINESS.siteUrl}/logo-full.png`} />
     <meta name="twitter:card" content="summary" />
+    <meta name="twitter:image" content={`${BUSINESS.siteUrl}/logo-full.png`} />
 
     <script type="application/ld+json" is:inline set:html={JSON.stringify(localBusinessSchema)} />
   </head>

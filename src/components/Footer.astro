@@ -10,8 +10,13 @@ const featuredLocations = LOCATIONS.slice(0, 10);
 <footer class="border-t border-line bg-surface">
   <div class="mx-auto grid max-w-6xl gap-8 px-6 py-12 md:grid-cols-4">
     <div>
-      <p class="font-display text-lg font-semibold text-primary">{BUSINESS.name}</p>
-      <p class="mt-2 text-sm text-muted">{BUSINESS.tagline}</p>
+      <img
+        src="/logo-full.png"
+        alt={`${BUSINESS.name} — Pool Service — San Diego, CA`}
+        class="h-24 w-auto"
+        width="1117"
+        height="855"
+      />
       <p class="mt-4 text-sm">
         <a href={BUSINESS.phoneHref} class="font-medium text-ink hover:text-primary">{BUSINESS.phone}</a>
       </p>
