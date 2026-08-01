@@ -8,4 +8,5 @@ export const BUSINESS = {
   serviceRegion: 'San Diego County, CA',
   siteUrl: 'https://www.pooltidal.com',
   twitterUrl: 'https://x.com/pooltidal',
+  instagramUrl: 'https://www.instagram.com/pooltidal/',
 } as const;
