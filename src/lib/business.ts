@@ -1,8 +1,8 @@
 export const BUSINESS = {
   name: 'Pool Tidal',
   tagline: 'San Diego pool cleaning, repair & service',
-  phone: '(720) 720-9212',
-  phoneHref: 'tel:+17207209212',
+  phone: '(858) 800-2312',
+  phoneHref: 'tel:+18588002312',
   email: 'jloftis10@gmail.com',
   emailHref: 'mailto:jloftis10@gmail.com',
   serviceRegion: 'San Diego County, CA',
