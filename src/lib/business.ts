@@ -3,8 +3,8 @@ export const BUSINESS = {
   tagline: 'San Diego pool cleaning, repair & service',
   phone: '(858) 800-2312',
   phoneHref: 'tel:+18588002312',
-  email: 'jloftis10@gmail.com',
-  emailHref: 'mailto:jloftis10@gmail.com',
+  email: 'jim@pooltidal.com',
+  emailHref: 'mailto:jim@pooltidal.com',
   serviceRegion: 'San Diego County, CA',
   siteUrl: 'https://www.pooltidal.com',
 } as const;
