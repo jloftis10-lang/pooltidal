@@ -26,6 +26,11 @@ const readingMinutes = Math.max(1, Math.round(wordCount / 200));
 
 const postUrl = `${BUSINESS.siteUrl}/blog/${post.id}`;
 
+// Keep the SERP <title> under Google's ~60-char truncation point — only add
+// the brand suffix when the post's own headline leaves room for it.
+const withSuffix = `${post.data.title} | Pool Tidal`;
+const pageTitle = withSuffix.length <= 60 ? withSuffix : post.data.title;
+
 const articleSchema = {
   '@context': 'https://schema.org',
   '@type': 'BlogPosting',
@@ -49,7 +54,7 @@ const breadcrumbSchema = {
 };
 ---
 
-<Layout title={`${post.data.title} | Pool Tidal Blog`} description={post.data.description}>
+<Layout title={pageTitle} description={post.data.description}>
   <script type="application/ld+json" is:inline set:html={JSON.stringify(articleSchema)} />
   <script type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbSchema)} />
 

@@ -1,6 +1,6 @@
 ---
 title: "Why Regular Pool Maintenance Matters for San Diego Pool Owners"
-description: "San Diego's near-year-round swim season means pools work harder than almost anywhere else. Here's why regular maintenance isn't optional if you want to avoid costly repairs."
+description: "San Diego's near-year-round swim season means pools work harder than almost anywhere else — here's why regular maintenance isn't optional."
 publishDate: 2026-07-08
 tags: ["Pool Maintenance", "San Diego"]
 ---
