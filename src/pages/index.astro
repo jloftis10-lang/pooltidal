@@ -1,12 +1,12 @@
 ---
-import { Image } from 'astro:assets';
+import { Picture } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import ServiceCard from '../components/ServiceCard.astro';
 import LocationCard from '../components/LocationCard.astro';
 import CTASection from '../components/CTASection.astro';
 import Icon from '../components/Icon.astro';
 import PoolWaterBackground from '../components/PoolWaterBackground.astro';
-import poolShowcase from '../assets/images/home-pool-showcase.webp';
+import poolShowcase from '../assets/images/san-diego-backyard-pool-clear-water.webp';
 import { SERVICES } from '../lib/services';
 import { LOCATIONS } from '../lib/locations';
 import { BUSINESS } from '../lib/business';
@@ -82,9 +82,13 @@ const highlights = [
           actually keeping up.
         </p>
       </div>
-      <Image
+      <Picture
         src={poolShowcase}
         alt="A clear, well-maintained backyard pool with an ocean view in San Diego County"
+        formats={['avif', 'webp']}
+        fallbackFormat="webp"
+        widths={[400, 640, 800, 1100, 1536]}
+        sizes="(min-width: 768px) 532px, 100vw"
         width={1536}
         height={1024}
         class="rounded-2xl object-cover shadow-lg"

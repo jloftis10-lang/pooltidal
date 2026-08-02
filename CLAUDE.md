@@ -63,13 +63,27 @@ just give it accurate tags.
 
 ## Photos
 
-Real (non-logo) photography goes in `src/assets/images/` and is imported +
-rendered via `astro:assets`' `<Image />` (see `index.astro`'s
-`home-pool-showcase.webp` usage) — that gets it run through Astro's build-time
-image pipeline (re-encoding, hashed `_astro/` output) instead of served
-unoptimized from `public/`. This is different from the logo/favicon/OG-image
-files, which intentionally stay in `public/` as fixed, already-sized assets
-referenced by exact path (`/logo-full.png`, etc.) rather than imported.
+Real (non-logo) photography goes in `src/assets/images/` with a **descriptive,
+keyword-relevant filename** (e.g. `san-diego-backyard-pool-clear-water.webp`,
+not `photo1.webp`) and is imported + rendered via `astro:assets`' `<Picture />`
+(see `index.astro`) — not `<Image />` — with:
+
+- `formats={['avif', 'webp']}` plus **`fallbackFormat="webp"`**. Without an
+  explicit `fallbackFormat`, Astro doesn't trust webp/avif sources as a "safe"
+  universal fallback and silently generates a same-dimensions **PNG** fallback
+  per width instead — multiple megabytes each. Always set it explicitly.
+- `widths={[...]}` + a `sizes` attribute matched to the image's actual
+  rendered width in that layout (check the container/grid CSS, don't guess)
+  — this is what makes mobile download a ~15-40KB variant instead of the
+  same file desktop gets. Verify with real network requests at a mobile
+  viewport before trusting it, not just by reading the markup.
+- A specific, honest `alt` — describes what's actually in the frame,
+  naturally includes location context, never keyword-stuffed.
+
+This is different from the logo/favicon/OG-image files, which intentionally
+stay in `public/` as fixed, already-sized assets referenced by exact path
+(`/logo-full.png`, etc.) rather than imported — those are pre-sized for their
+one specific use (favicon, header lockup) and don't need responsive variants.
 
 Caption copy for photos should stay honest about what it's actually showing
 — don't caption a photo as a specific documented Pool Tidal job/customer
