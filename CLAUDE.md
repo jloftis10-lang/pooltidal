@@ -23,7 +23,11 @@ page ends in a phone call or the contact form.
   `about`/`poolNote` copy.
 - `src/lib/services.ts` — the 4 services offered. Adding a 5th service is just
   adding an entry here; `src/pages/services/[slug].astro` picks it up
-  automatically via `getStaticPaths`.
+  automatically via `getStaticPaths`. Each service also carries a `faqs[]`
+  array (4 real Q&As, not filler) rendered as a `<details>` accordion and
+  emitted as `FAQPage` JSON-LD — give a new service real FAQs too, not a
+  placeholder, since fabricated FAQ schema is exactly what Google's spam
+  policies target.
 - `src/lib/business.ts` — name/phone/email/domain used everywhere (header,
   footer, schema.org JSON-LD). Update contact info here, not per-page.
 
@@ -79,7 +83,11 @@ without it being asked for again.
   `public/robots.txt`'s `Sitemap:` line if the domain changes.
 - `Layout.astro` emits a sitewide `LocalBusiness` JSON-LD block (including
   `image`/`logo` pointing at `logo-full.png`) with `areaServed` generated
-  from `LOCATIONS`; location pages add their own `BreadcrumbList` JSON-LD.
+  from `LOCATIONS`; location, blog, and service pages each add their own
+  `BreadcrumbList` JSON-LD, and service pages also add `FAQPage` JSON-LD.
+- `src/pages/404.astro` is Astro's static-build convention for a 404 page —
+  Vercel picks it up automatically for unmatched routes, nothing else to
+  configure.
 - `public/og-image.png` (1200×630, `og:image`/`twitter:image`, card type
   `summary_large_image`) was generated the same way as the CBD Dog Guide
   project's — a styled HTML template (teal gradient + caustics background,
