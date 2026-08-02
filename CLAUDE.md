@@ -61,6 +61,21 @@ first, then recency, taking the top 3. It's derived at build time from the
 `tags` frontmatter — there's nothing to maintain by hand when adding a post,
 just give it accurate tags.
 
+## Photos
+
+Real (non-logo) photography goes in `src/assets/images/` and is imported +
+rendered via `astro:assets`' `<Image />` (see `index.astro`'s
+`home-pool-showcase.webp` usage) — that gets it run through Astro's build-time
+image pipeline (re-encoding, hashed `_astro/` output) instead of served
+unoptimized from `public/`. This is different from the logo/favicon/OG-image
+files, which intentionally stay in `public/` as fixed, already-sized assets
+referenced by exact path (`/logo-full.png`, etc.) rather than imported.
+
+Caption copy for photos should stay honest about what it's actually showing
+— don't caption a photo as a specific documented Pool Tidal job/customer
+unless that's confirmed true; general/aspirational framing ("what consistent
+care looks like") is fine when the photo's provenance isn't established.
+
 ## Logo
 
 `public/logo-full.png` is the real brand mark (a wave-badge icon + "Pool
