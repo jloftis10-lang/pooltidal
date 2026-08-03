@@ -118,6 +118,21 @@ without it being asked for again.
   Vercel picks it up automatically for unmatched routes, nothing else to
   configure.
 
+## Analytics
+
+Two analytics scripts run sitewide, both from `Layout.astro`, deliberately
+via different mechanisms:
+- **Vercel Web Analytics** — the official `@vercel/analytics/astro`
+  component (`<Analytics />` in the `<body>`).
+- **Microsoft Clarity** — the vendor's manual `<script is:inline>` snippet
+  pasted verbatim into `<head>` (project ID `xwsuw7hzb9`), not the
+  `@microsoft/clarity` npm package. That package is for apps that need to
+  programmatically call the Clarity API (custom events, identify, consent) —
+  this is a static multi-page site with no such need, so the plain snippet
+  is the right fit. Keep `is:inline` on it; without that directive Astro
+  will try to process/bundle the script through Vite, which can break its
+  plain-JS IIFE syntax.
+
 ## Pool volume calculator
 
 `src/pages/pool-volume-calculator.astro` is a standalone interactive tool
