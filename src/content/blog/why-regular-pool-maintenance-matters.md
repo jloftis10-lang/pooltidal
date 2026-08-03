@@ -11,7 +11,7 @@ If you own a pool in San Diego County, it doesn't get much of an off-season. Mil
 
 Chlorine breaks down in sunlight. Algae spores are airborne and constantly looking for an opening. pH and alkalinity shift with every bit of rain, dust, sunscreen, and pool use. Left unchecked for even a week or two, especially during peak summer heat, water that looked fine can turn cloudy or green surprisingly fast.
 
-Regular testing and balancing isn't just about keeping the water pretty. Imbalanced water:
+Regular testing and balancing isn't just about keeping the water pretty — it's also about dosing chemicals correctly, which depends on knowing your pool's actual size. If you're not sure how many gallons your pool holds, our [pool volume calculator](/pool-volume-calculator) can give you a quick estimate. Imbalanced water:
 
 - Irritates skin, eyes, and swimsuits
 - Corrodes metal fixtures, ladders, and heater components when pH runs too low

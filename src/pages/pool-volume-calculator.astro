@@ -1,0 +1,300 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+import CTASection from '../components/CTASection.astro';
+import { BUSINESS } from '../lib/business';
+
+const faqs = [
+  {
+    question: 'How accurate is this calculator?',
+    answer:
+      "It's accurate for pools that are close to a standard rectangular, round, or oval shape with a fairly even slope between shallow and deep ends — which covers most residential pools. Freeform or heavily stepped pools will be an approximation rather than an exact figure.",
+  },
+  {
+    question: "Why does my pool's volume matter?",
+    answer:
+      "Chemical dosing — chlorine, shock, algaecide, pH adjusters — is calculated per gallon of water. Treating a pool based on a guessed volume instead of its actual size is one of the most common reasons chemistry ends up over- or under-corrected.",
+  },
+  {
+    question: 'What if my pool has an irregular or freeform shape?',
+    answer:
+      "Break it into two or three rough rectangular or round sections, calculate each separately, and add the results together. For anything more complex, we can give you an accurate measurement as part of a service visit.",
+  },
+  {
+    question: 'Should I use my pool\'s max depth or the current water level?',
+    answer:
+      "Use the actual depth of the water right now, not the pool's maximum design depth — if your water level runs a few inches low, using the design depth will overstate your volume.",
+  },
+];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((faq) => ({
+    '@type': 'Question',
+    name: faq.question,
+    acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+  })),
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: BUSINESS.siteUrl },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: 'Pool Volume Calculator',
+      item: `${BUSINESS.siteUrl}/pool-volume-calculator`,
+    },
+  ],
+};
+---
+
+<Layout
+  title="Pool Volume Calculator (Gallons) | Pool Tidal"
+  description="Free pool volume calculator — find out how many gallons your pool holds for rectangular, round, or oval pools. Useful for accurate chemical dosing."
+>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbSchema)} />
+
+  <section class="mx-auto max-w-3xl px-6 py-16">
+    <nav class="text-sm text-muted">
+      <a href="/" class="hover:text-primary">Home</a> /
+      <span class="text-ink">Pool Volume Calculator</span>
+    </nav>
+
+    <span class="mt-4 block text-sm font-semibold uppercase tracking-wide text-primary">Free Tool</span>
+    <h1 class="mt-3 font-display text-3xl font-semibold text-ink md:text-4xl">Pool Volume Calculator</h1>
+    <p class="mt-4 text-lg text-muted">
+      Enter your pool's dimensions to estimate how many gallons it holds. This matters more than it
+      sounds like — accurate chemical dosing depends on knowing your pool's actual volume, not a
+      guess.
+    </p>
+
+    <form id="volume-calculator" class="mt-10 rounded-2xl border border-line bg-surface p-6">
+      <fieldset>
+        <legend class="text-sm font-medium text-ink">Pool shape</legend>
+        <div class="mt-2 grid grid-cols-3 gap-2">
+          <label class="shape-option cursor-pointer rounded-lg border border-line px-3 py-2 text-center text-sm font-medium text-ink has-[:checked]:border-primary has-[:checked]:bg-canvas has-[:checked]:text-primary">
+            <input type="radio" name="shape" value="rectangular" checked class="sr-only" />
+            Rectangular
+          </label>
+          <label class="shape-option cursor-pointer rounded-lg border border-line px-3 py-2 text-center text-sm font-medium text-ink has-[:checked]:border-primary has-[:checked]:bg-canvas has-[:checked]:text-primary">
+            <input type="radio" name="shape" value="round" class="sr-only" />
+            Round
+          </label>
+          <label class="shape-option cursor-pointer rounded-lg border border-line px-3 py-2 text-center text-sm font-medium text-ink has-[:checked]:border-primary has-[:checked]:bg-canvas has-[:checked]:text-primary">
+            <input type="radio" name="shape" value="oval" class="sr-only" />
+            Oval
+          </label>
+        </div>
+      </fieldset>
+
+      <div id="field-length-width" class="mt-5 grid gap-4 sm:grid-cols-2">
+        <div>
+          <label for="length" class="text-sm font-medium text-ink">Length (ft)</label>
+          <input
+            id="length"
+            type="number"
+            min="0"
+            step="0.1"
+            inputmode="decimal"
+            class="calc-input mt-1 w-full rounded-lg border border-line bg-surface px-3 py-2 text-ink focus:border-primary focus:outline-none"
+          />
+        </div>
+        <div>
+          <label for="width" class="text-sm font-medium text-ink">Width (ft)</label>
+          <input
+            id="width"
+            type="number"
+            min="0"
+            step="0.1"
+            inputmode="decimal"
+            class="calc-input mt-1 w-full rounded-lg border border-line bg-surface px-3 py-2 text-ink focus:border-primary focus:outline-none"
+          />
+        </div>
+      </div>
+
+      <div id="field-diameter" class="mt-5 hidden">
+        <label for="diameter" class="text-sm font-medium text-ink">Diameter (ft)</label>
+        <input
+          id="diameter"
+          type="number"
+          min="0"
+          step="0.1"
+          inputmode="decimal"
+          class="calc-input mt-1 w-full max-w-xs rounded-lg border border-line bg-surface px-3 py-2 text-ink focus:border-primary focus:outline-none"
+        />
+      </div>
+
+      <label class="mt-5 flex items-center gap-2 text-sm text-ink">
+        <input id="dual-depth" type="checkbox" class="h-4 w-4 rounded border-line accent-primary" />
+        My pool has a separate shallow end and deep end
+      </label>
+
+      <div id="field-single-depth" class="mt-3">
+        <label for="depth" class="text-sm font-medium text-ink">Water depth (ft)</label>
+        <input
+          id="depth"
+          type="number"
+          min="0"
+          step="0.1"
+          inputmode="decimal"
+          class="calc-input mt-1 w-full max-w-xs rounded-lg border border-line bg-surface px-3 py-2 text-ink focus:border-primary focus:outline-none"
+        />
+      </div>
+
+      <div id="field-dual-depth" class="mt-3 hidden grid gap-4 sm:grid-cols-2">
+        <div>
+          <label for="shallow-depth" class="text-sm font-medium text-ink">Shallow end depth (ft)</label>
+          <input
+            id="shallow-depth"
+            type="number"
+            min="0"
+            step="0.1"
+            inputmode="decimal"
+            class="calc-input mt-1 w-full rounded-lg border border-line bg-surface px-3 py-2 text-ink focus:border-primary focus:outline-none"
+          />
+        </div>
+        <div>
+          <label for="deep-depth" class="text-sm font-medium text-ink">Deep end depth (ft)</label>
+          <input
+            id="deep-depth"
+            type="number"
+            min="0"
+            step="0.1"
+            inputmode="decimal"
+            class="calc-input mt-1 w-full rounded-lg border border-line bg-surface px-3 py-2 text-ink focus:border-primary focus:outline-none"
+          />
+        </div>
+      </div>
+
+      <div class="mt-8 rounded-xl bg-canvas p-6 text-center">
+        <p class="text-sm font-medium uppercase tracking-wide text-muted-soft">Estimated volume</p>
+        <p id="result-gallons" class="mt-1 font-display text-4xl font-semibold text-primary">—</p>
+        <p id="result-cubic-feet" class="mt-1 text-sm text-muted"></p>
+      </div>
+    </form>
+
+    <div class="mt-8 rounded-2xl border border-line bg-surface p-6 text-sm text-muted">
+      <h2 class="font-display text-base font-semibold text-ink">How this is calculated</h2>
+      <p class="mt-2">
+        Volume in cubic feet is length &times; width &times; average depth (rectangular and oval, with
+        oval adjusted by a 0.85 shape factor), or &pi; &times; radius&sup2; &times; average depth for
+        round pools. Cubic feet is then converted to gallons by multiplying by 7.5 (1 cubic foot
+        &asymp; 7.48 gallons). Average depth is the shallow and deep end depths averaged together,
+        which is the standard approximation for pools with a consistent slope.
+      </p>
+    </div>
+
+    <div class="mt-12">
+      <h2 class="font-display text-xl font-semibold text-ink">Frequently asked questions</h2>
+      <div class="mt-4 divide-y divide-line rounded-2xl border border-line bg-surface">
+        {
+          faqs.map((faq) => (
+            <details class="group p-5">
+              <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-medium text-ink marker:content-none">
+                {faq.question}
+                <Icon
+                  name="chevron-down"
+                  class="h-5 w-5 flex-shrink-0 text-primary transition-transform group-open:rotate-180"
+                />
+              </summary>
+              <p class="mt-3 text-sm text-muted">{faq.answer}</p>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CTASection
+    heading="Want us to handle the chemistry instead?"
+    subheading="Weekly service means the right chemical balance for your pool's actual volume, every visit — no guessing."
+  />
+</Layout>
+
+<script>
+  const form = document.getElementById('volume-calculator') as HTMLFormElement;
+
+  const shapeInputs = form.querySelectorAll<HTMLInputElement>('input[name="shape"]');
+  const dualDepthCheckbox = document.getElementById('dual-depth') as HTMLInputElement;
+
+  const fieldLengthWidth = document.getElementById('field-length-width') as HTMLElement;
+  const fieldDiameter = document.getElementById('field-diameter') as HTMLElement;
+  const fieldSingleDepth = document.getElementById('field-single-depth') as HTMLElement;
+  const fieldDualDepth = document.getElementById('field-dual-depth') as HTMLElement;
+
+  const lengthInput = document.getElementById('length') as HTMLInputElement;
+  const widthInput = document.getElementById('width') as HTMLInputElement;
+  const diameterInput = document.getElementById('diameter') as HTMLInputElement;
+  const depthInput = document.getElementById('depth') as HTMLInputElement;
+  const shallowInput = document.getElementById('shallow-depth') as HTMLInputElement;
+  const deepInput = document.getElementById('deep-depth') as HTMLInputElement;
+
+  const resultGallons = document.getElementById('result-gallons') as HTMLElement;
+  const resultCubicFeet = document.getElementById('result-cubic-feet') as HTMLElement;
+
+  function currentShape(): string {
+    return (form.querySelector('input[name="shape"]:checked') as HTMLInputElement)?.value ?? 'rectangular';
+  }
+
+  function updateVisibility() {
+    const shape = currentShape();
+    fieldLengthWidth.classList.toggle('hidden', shape === 'round');
+    fieldDiameter.classList.toggle('hidden', shape !== 'round');
+
+    const dual = dualDepthCheckbox.checked;
+    fieldSingleDepth.classList.toggle('hidden', dual);
+    fieldDualDepth.classList.toggle('hidden', !dual);
+  }
+
+  function num(input: HTMLInputElement): number {
+    const v = parseFloat(input.value);
+    return Number.isFinite(v) && v > 0 ? v : 0;
+  }
+
+  function calculate() {
+    const shape = currentShape();
+    const avgDepth = dualDepthCheckbox.checked
+      ? (num(shallowInput) + num(deepInput)) / 2
+      : num(depthInput);
+
+    let cubicFeet = 0;
+    if (shape === 'rectangular') {
+      cubicFeet = num(lengthInput) * num(widthInput) * avgDepth;
+    } else if (shape === 'round') {
+      const radius = num(diameterInput) / 2;
+      cubicFeet = Math.PI * radius * radius * avgDepth;
+    } else if (shape === 'oval') {
+      cubicFeet = num(lengthInput) * num(widthInput) * avgDepth * 0.85;
+    }
+
+    const gallons = cubicFeet * 7.5;
+
+    if (gallons > 0) {
+      resultGallons.textContent = `${Math.round(gallons).toLocaleString()} gal`;
+      resultCubicFeet.textContent = `${Math.round(cubicFeet).toLocaleString()} cubic feet`;
+    } else {
+      resultGallons.textContent = '—';
+      resultCubicFeet.textContent = '';
+    }
+  }
+
+  shapeInputs.forEach((input) => input.addEventListener('change', () => {
+    updateVisibility();
+    calculate();
+  }));
+  dualDepthCheckbox.addEventListener('change', () => {
+    updateVisibility();
+    calculate();
+  });
+  form.querySelectorAll('.calc-input').forEach((input) => {
+    input.addEventListener('input', calculate);
+  });
+
+  updateVisibility();
+  calculate();
+</script>

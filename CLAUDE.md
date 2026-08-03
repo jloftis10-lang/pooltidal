@@ -117,6 +117,24 @@ without it being asked for again.
 - `src/pages/404.astro` is Astro's static-build convention for a 404 page —
   Vercel picks it up automatically for unmatched routes, nothing else to
   configure.
+
+## Pool volume calculator
+
+`src/pages/pool-volume-calculator.astro` is a standalone interactive tool
+(rectangular/round/oval shape, constant or shallow+deep depth, live gallons
+output) — the only page on the site with real client-side logic, in a plain
+`<script>` tag (no framework, matches the "vanilla TypeScript" stack note
+above). It has its own `FAQPage` + `BreadcrumbList` JSON-LD, is linked from
+the footer's Company column, and is cross-linked from blog posts where
+chemical dosing comes up (`why-regular-pool-maintenance-matters.md`,
+`how-long-to-clear-a-green-pool.md`).
+
+If you touch the calculation logic, verify it in an actual browser rather
+than trusting the code by inspection — it's genuinely easy to get the
+oval shape factor (0.85), the round-pool radius-vs-diameter math, or the
+dual-depth averaging wrong in a way that reads fine but computes wrong.
+The three formulas: rectangular/oval = length × width × avg depth (× 0.85
+for oval), round = π × radius² × avg depth; cubic feet → gallons is × 7.5.
 - `public/og-image.png` (1200×630, `og:image`/`twitter:image`, card type
   `summary_large_image`) was generated the same way as the CBD Dog Guide
   project's — a styled HTML template (teal gradient + caustics background,

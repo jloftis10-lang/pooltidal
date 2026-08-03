@@ -26,7 +26,7 @@ For a moderately green pool, 2–4 days of this process is common. Severely gree
 
 - **How long the pool has been neglected** — a pool that turned green last week clears faster than one that's been green for two months
 - **Filter type and condition** — a clean, properly sized filter clears water much faster than one that's old, undersized, or already struggling
-- **Pool size relative to equipment** — larger pools take longer to fully turn over and filter
+- **Pool size relative to equipment** — larger pools take longer to fully turn over and filter, and shock dosing itself is calculated per gallon, so knowing your actual volume (our [pool volume calculator](/pool-volume-calculator) can help) matters even during recovery
 - **Whether equipment is actually working** — recovery assumes the pump and filter can run continuously; if either was part of why the pool went green in the first place (a failing pump, a clogged filter that was never addressed), that has to be fixed before recovery can finish
 
 ## Why DIY green pool recovery often stalls out
