@@ -3,6 +3,8 @@ title: "How to Choose a Pool Service Company in San Diego: 7 Questions to Ask"
 description: "Not all pool service companies work the same way. Here are 7 questions worth asking before you commit to one in San Diego County."
 publishDate: 2026-08-25
 tags: ["Pool Maintenance", "San Diego"]
+cluster: "San Diego Pool Care"
+relatedService: "weekly-cleaning-maintenance"
 ---
 
 San Diego County has no shortage of pool service companies, and they don't all operate the same way. Before you commit to weekly service or a repair, it's worth asking a few questions that reveal how a company actually works day to day — not just what their website says.

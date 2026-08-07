@@ -20,7 +20,15 @@ page ends in a phone call or the contact form.
   and `poolNote` (pool-service-specific angle for that area). **Never make a
   new location page a template with just the city name swapped in** — Google
   treats that as thin/duplicate content. Every new city needs its own real
-  `about`/`poolNote` copy.
+  `about`/`poolNote` copy. Beyond those two required fields, `Location` has
+  several **optional** richer fields — `neighborhoods`, `localPoolChallenges`,
+  `intro`, `serviceNotes`, `faq`, `relatedLocations`, `featured` — that
+  `[slug].astro` only renders when present, so a city can start minimal and
+  get filled in later without touching the page template. The 8 `featured:
+  true` cities (San Diego, Carlsbad, Oceanside, San Marcos, Vista, Solana
+  Beach, Encinitas, Del Mar) have these populated already; use them as the
+  reference for what real (non-generic, non-invented) content in these
+  fields looks like before adding more.
 - `src/lib/services.ts` — the 4 services offered. Adding a 5th service is just
   adding an entry here; `src/pages/services/[slug].astro` picks it up
   automatically via `getStaticPaths`. Each service also carries a `faqs[]`
@@ -29,7 +37,21 @@ page ends in a phone call or the contact form.
   placeholder, since fabricated FAQ schema is exactly what Google's spam
   policies target.
 - `src/lib/business.ts` — name/phone/email/domain used everywhere (header,
-  footer, schema.org JSON-LD). Update contact info here, not per-page.
+  footer, schema.org JSON-LD). Update contact info here, not per-page. Also
+  holds a block of **unverified-fact fields** (`licenseNumber`, `insured`,
+  `address`, `openingHours`, `googleBusinessUrl`) that default to
+  `undefined` on purpose — every page that could render one of these
+  (Footer, `LocalBusiness` JSON-LD) checks for a real value first and
+  renders nothing if it's unset. **Never fill these in with a placeholder
+  or invented value** — only set them once the real, confirmed fact is
+  supplied. Same rule for `src/lib/reviews.ts`'s `REVIEWS` array (rendered
+  by `Testimonials.astro`, which renders nothing while it's empty) — no
+  sample/demo reviews, ever.
+- `src/lib/trust.ts` (`TRUST_ITEMS`, used by `TrustStrip.astro`) and
+  `src/lib/differentiators.ts` (`DIFFERENTIATORS`, used on the homepage) —
+  small, centralized lists of factual, already-substantiated claims
+  (service scope, not credentials/ratings). Add to these lists rather than
+  hardcoding a new trust badge or differentiator card inline.
 
 `src/pages/locations/[slug].astro` and `src/pages/services/[slug].astro` are
 both `getStaticPaths()`-driven off those arrays — adding a city or service to
@@ -61,6 +83,14 @@ first, then recency, taking the top 3. It's derived at build time from the
 `tags` frontmatter — there's nothing to maintain by hand when adding a post,
 just give it accurate tags.
 
+Two more required/optional frontmatter fields beyond the original set:
+`cluster` (required — one of `Pool Maintenance`, `Pool Equipment`, `Pool
+Problems`, `San Diego Pool Care`; groups posts into sections on `/blog`) and
+`relatedService` (optional — a service slug from `src/lib/services.ts` that
+renders a compact `BlogServiceCTA` at the end of the post). See
+`SEO-CONTENT-ROADMAP.md` for planned future topics already mapped to a
+cluster and service.
+
 ## Photos
 
 Real (non-logo) photography goes in `src/assets/images/` with a **descriptive,
@@ -89,6 +119,14 @@ Caption copy for photos should stay honest about what it's actually showing
 — don't caption a photo as a specific documented Pool Tidal job/customer
 unless that's confirmed true; general/aspirational framing ("what consistent
 care looks like") is fine when the photo's provenance isn't established.
+
+For **future field photography** (technician servicing, chemistry testing,
+before/after, finished pools, etc.) that doesn't exist yet, don't touch this
+pattern — `src/components/PhotoGallery.astro` + `src/lib/photo-slots.ts`
+handle it separately by globbing `src/assets/photos/*` and rendering only
+the categories that have a real file, per the naming convention in
+`IMAGE-GUIDE.md`. It's already mounted on the About page and renders nothing
+until real photos are dropped in — never add stock/AI imagery to fill it.
 
 ## Logo
 
@@ -133,6 +171,19 @@ via different mechanisms:
   will try to process/bundle the script through Vite, which can break its
   plain-JS IIFE syntax.
 
+Custom conversion events go through `src/scripts/track.ts`'s `trackEvent()`
+(exposed as `window.trackEvent`, imported once in `Layout.astro`), which
+fires to both Vercel Analytics' `track()` and `window.clarity('event', ...)`
+in one call. Call sites use inline `onclick="window.trackEvent && ..."`
+(guarded since the script needs a tick to attach) rather than addEventListener,
+matching the rest of the site's no-framework approach. The fixed event
+vocabulary is `phone_click`, `email_click`, `quote_cta_click`,
+`quote_form_started`, `quote_form_submitted`, `service_cta_click`,
+`location_cta_click`, `calculator_completed` — reuse one of these rather
+than inventing a new event name, and **never pass name, phone, email,
+address, or message text as an event property** — only non-PII context like
+a service/location slug.
+
 ## Pool volume calculator
 
 `src/pages/pool-volume-calculator.astro` is a standalone interactive tool
@@ -169,6 +220,22 @@ for oval), round = π × radius² × avg depth; cubic feet → gallons is × 7.5
 `BUSINESS.email` as the target — no backend required. **The first real
 submission triggers a one-time confirmation email** that must be clicked to
 activate delivery; do that before relying on the form going live.
+
+Hidden fields: `_captcha` (FormSubmit's built-in captcha), `_honey` (a
+honeypot input hidden via CSS and `tabindex="-1"` — bots that fill every
+field trip it, real users never see it), and `_next` (set to
+`${BUSINESS.siteUrl}/thank-you`, so a successful submission redirects there
+instead of FormSubmit's default confirmation page). `service`/`location`
+`<select>` options carry a `data-slug` attribute so `/contact?service=<slug>`
+and `/contact?city=<slug>` (used by service/location page CTAs) can
+preselect the right option — matched against `data-slug`, not the visible
+label, so relabeling an option's text doesn't break the query-param link.
+A `?gallons=<n>` param (from the pool volume calculator) prefills the
+message field with the estimated volume.
+
+`/thank-you` fires the `quote_form_submitted` analytics event on load, since
+the FormSubmit redirect is the only reliable "it actually sent" signal
+available without a backend.
 
 ## Commands
 

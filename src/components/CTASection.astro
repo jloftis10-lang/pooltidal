@@ -4,12 +4,20 @@ import { BUSINESS } from '../lib/business';
 interface Props {
   heading?: string;
   subheading?: string;
+  ctaHref?: string;
+  ctaLabel?: string;
+  trackingLocation?: string;
 }
 
 const {
   heading = 'Ready for a pool you never have to think about?',
   subheading = 'Tell us your address and we\'ll put together a service plan for your pool.',
+  ctaHref = '/contact',
+  ctaLabel = 'Get a Free Quote',
+  trackingLocation,
 } = Astro.props;
+
+const eventProps = trackingLocation ? JSON.stringify({ location: trackingLocation }) : '';
 ---
 
 <section class="bg-primary">
@@ -18,13 +26,15 @@ const {
     <p class="max-w-xl text-white/90">{subheading}</p>
     <div class="flex flex-wrap items-center justify-center gap-4">
       <a
-        href="/contact"
+        href={ctaHref}
+        onclick={`window.trackEvent && window.trackEvent('quote_cta_click', ${eventProps || 'undefined'})`}
         class="rounded-full bg-accent-strong px-6 py-3 text-sm font-semibold text-white hover:opacity-90"
       >
-        Get a Free Quote
+        {ctaLabel}
       </a>
       <a
         href={BUSINESS.phoneHref}
+        onclick={`window.trackEvent && window.trackEvent('phone_click', ${eventProps || 'undefined'})`}
         class="rounded-full border border-white/40 px-6 py-3 text-sm font-semibold text-white hover:bg-white/10"
       >
         Call {BUSINESS.phone}

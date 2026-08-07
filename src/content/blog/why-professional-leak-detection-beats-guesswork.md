@@ -3,6 +3,8 @@ title: "Why Professional Pool Leak Detection Beats Guesswork"
 description: "A bucket test can tell you a leak exists. Finding it — and fixing it without tearing up half your yard — takes a more methodical approach."
 publishDate: 2026-07-30
 tags: ["Leak Detection", "Pool Repair"]
+cluster: "Pool Problems"
+relatedService: "pool-repair"
 ---
 
 Once you've [confirmed your pool is losing more water than evaporation explains](/blog/how-to-spot-a-pool-leak), the next question is where the water is actually going. This is where a lot of pool owners either start guessing — patching a crack that turns out not to be the source, or draining and refilling repeatedly hoping the problem fixes itself — or decide to just live with topping off the water every few days. Neither approach solves anything, and both usually end up costing more than proper diagnosis would have.

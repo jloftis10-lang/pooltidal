@@ -2,28 +2,70 @@
 import { BUSINESS } from '../lib/business';
 import { SERVICES } from '../lib/services';
 import { LOCATIONS } from '../lib/locations';
+import { FOOTER_LOGO } from '../lib/branding';
 import Icon from './Icon.astro';
 
 const year = new Date().getFullYear();
-const featuredLocations = LOCATIONS.slice(0, 10);
+// Priority (featured) cities first, so the footer surfaces the same cities
+// that have richer local-SEO content, then fill the rest by list order.
+const featuredLocations = [...LOCATIONS]
+  .sort((a, b) => Number(Boolean(b.featured)) - Number(Boolean(a.featured)))
+  .slice(0, 10);
 ---
 
 <footer class="border-t border-line bg-surface">
   <div class="mx-auto grid max-w-6xl gap-8 px-6 py-12 md:grid-cols-4">
     <div>
       <img
-        src="/logo-full.png"
+        src={FOOTER_LOGO}
         alt={`${BUSINESS.name} — Pool Service — San Diego, CA`}
         class="h-24 w-auto"
         width="1117"
         height="855"
       />
       <p class="mt-4 text-sm">
-        <a href={BUSINESS.phoneHref} class="font-medium text-ink hover:text-primary">{BUSINESS.phone}</a>
+        <a
+          href={BUSINESS.phoneHref}
+          onclick="window.trackEvent && window.trackEvent('phone_click')"
+          class="font-medium text-ink hover:text-primary"
+        >
+          {BUSINESS.phone}
+        </a>
       </p>
       <p class="text-sm">
-        <a href={BUSINESS.emailHref} class="font-medium text-ink hover:text-primary">{BUSINESS.email}</a>
+        <a
+          href={BUSINESS.emailHref}
+          onclick="window.trackEvent && window.trackEvent('email_click')"
+          class="font-medium text-ink hover:text-primary"
+        >
+          {BUSINESS.email}
+        </a>
       </p>
+      {
+        BUSINESS.licenseNumber && (
+          <p class="mt-2 text-xs text-muted-soft">License #{BUSINESS.licenseNumber}</p>
+        )
+      }
+      {
+        BUSINESS.address && (
+          <p class="text-xs text-muted-soft">
+            {BUSINESS.address.streetAddress}, {BUSINESS.address.addressLocality},{' '}
+            {BUSINESS.address.addressRegion} {BUSINESS.address.postalCode}
+          </p>
+        )
+      }
+      {
+        BUSINESS.googleBusinessUrl && (
+          <a
+            href={BUSINESS.googleBusinessUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="mt-1 block text-xs font-medium text-primary hover:text-primary-dark"
+          >
+            View us on Google &rarr;
+          </a>
+        )
+      }
       <div class="mt-4 flex items-center gap-2">
         <a
           href={BUSINESS.twitterUrl}

@@ -1,7 +1,9 @@
 ---
+import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import Icon from '../../components/Icon.astro';
 import CTASection from '../../components/CTASection.astro';
+import BlogCard from '../../components/BlogCard.astro';
 import { SERVICES } from '../../lib/services';
 import { LOCATIONS } from '../../lib/locations';
 import { BUSINESS } from '../../lib/business';
@@ -17,6 +19,12 @@ const { service } = Astro.props;
 const otherServices = SERVICES.filter((s) => s.slug !== service.slug);
 const sampleLocations = LOCATIONS.slice(0, 12);
 
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+const relatedPosts = service.relatedPosts
+  .map((slug) => allPosts.find((post) => post.id === slug))
+  .filter((post): post is (typeof allPosts)[number] => Boolean(post));
+
+const quoteHref = `/contact?service=${service.slug}`;
 const serviceUrl = `${BUSINESS.siteUrl}/services/${service.slug}`;
 
 const faqSchema = {
@@ -63,7 +71,25 @@ const breadcrumbSchema = {
 
     <p class="mt-6 text-lg text-muted">{service.longDesc}</p>
 
-    <h2 class="mt-10 font-display text-xl font-semibold text-ink">What's included</h2>
+    <div class="mt-8 flex flex-wrap items-center gap-4">
+      <a
+        href={quoteHref}
+        onclick={`window.trackEvent && window.trackEvent('service_cta_click', { service: '${service.slug}', location: 'service-hero' })`}
+        class="rounded-full bg-accent-strong px-6 py-3 text-sm font-semibold text-white hover:opacity-90"
+      >
+        Get a Quote for This Service
+      </a>
+      <a
+        href={BUSINESS.phoneHref}
+        onclick={`window.trackEvent && window.trackEvent('phone_click', { location: 'service-hero' })`}
+        class="inline-flex items-center gap-2 rounded-full border border-line px-6 py-3 text-sm font-semibold text-ink hover:border-primary hover:text-primary"
+      >
+        <Icon name="phone" class="h-4 w-4 flex-shrink-0" />
+        Call {BUSINESS.phone}
+      </a>
+    </div>
+
+    <h2 class="mt-12 font-display text-xl font-semibold text-ink">What's included</h2>
     <ul class="mt-4 space-y-3">
       {
         service.bullets.map((bullet) => (
@@ -75,6 +101,9 @@ const breadcrumbSchema = {
       }
     </ul>
 
+    <h2 class="mt-12 font-display text-xl font-semibold text-ink">Why it matters</h2>
+    <p class="mt-4 text-muted">{service.whyItMatters}</p>
+
     <div class="mt-10 rounded-2xl border border-line bg-surface p-6">
       <h2 class="font-display text-lg font-semibold text-ink">Available across San Diego County</h2>
       <p class="mt-2 text-sm text-muted">
@@ -85,6 +114,7 @@ const breadcrumbSchema = {
           sampleLocations.map((location) => (
             <a
               href={`/locations/${location.slug}`}
+              onclick={`window.trackEvent && window.trackEvent('location_cta_click', { location: '${location.slug}', service: '${service.slug}' })`}
               class="rounded-full border border-line px-3 py-1 text-sm text-ink hover:border-primary hover:text-primary"
             >
               {location.name}
@@ -117,6 +147,17 @@ const breadcrumbSchema = {
       </div>
     </div>
 
+    {
+      relatedPosts.length > 0 && (
+        <div class="mt-12">
+          <h2 class="font-display text-lg font-semibold text-ink">Related reading</h2>
+          <div class="mt-4 grid gap-4 sm:grid-cols-3">
+            {relatedPosts.map((post) => <BlogCard post={post} />)}
+          </div>
+        </div>
+      )
+    }
+
     <div class="mt-12">
       <h2 class="font-display text-lg font-semibold text-ink">Other services</h2>
       <div class="mt-4 grid gap-4 sm:grid-cols-3">
@@ -134,5 +175,9 @@ const breadcrumbSchema = {
     </div>
   </section>
 
-  <CTASection />
+  <CTASection
+    heading={`Ready to get started with ${service.name.toLowerCase()}?`}
+    ctaHref={quoteHref}
+    trackingLocation="service-footer"
+  />
 </Layout>

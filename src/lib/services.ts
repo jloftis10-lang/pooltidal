@@ -8,9 +8,13 @@ export interface Service {
   name: string;
   shortDesc: string;
   longDesc: string;
+  whyItMatters: string;
   bullets: string[];
   icon: 'waves' | 'wrench' | 'gear' | 'sun';
   faqs: Faq[];
+  // Slugs of related blog posts (src/content/blog) for cross-linking —
+  // matched against each post's filename, not a stored title/id.
+  relatedPosts: string[];
 }
 
 export const SERVICES: Service[] = [
@@ -20,14 +24,27 @@ export const SERVICES: Service[] = [
     shortDesc: 'Recurring visits that keep water balanced, equipment running, and your pool ready to swim.',
     longDesc:
       "Our core service is a scheduled weekly visit: we test and balance your water chemistry, skim and vacuum debris, brush walls and tile, empty baskets, and check equipment for early warning signs before they turn into repair calls. You get a consistent tech who knows your pool, not a rotating crew.",
+    whyItMatters:
+      "Chemistry drifts fast in San Diego's sun and heat, and skipped weeks compound — a pool that goes untested or unbrushed for a stretch is how routine maintenance turns into an algae bloom or a stained surface. A consistent weekly visit catches drift and wear early, which is almost always cheaper and easier to fix than what it turns into if it's missed.",
     bullets: [
-      'Water testing and chemical balancing (chlorine, pH, alkalinity, stabilizer)',
-      'Skimming, vacuuming, and brushing walls and tile',
-      'Skimmer and pump basket cleanout',
-      'Filter pressure and equipment check every visit',
+      'Water chemistry testing',
+      'Chemical balancing (chlorine, pH, alkalinity, stabilizer)',
+      'Surface skimming',
+      'Wall and tile brushing',
+      'Vacuuming as needed',
+      'Skimmer basket cleaning',
+      'Pump basket cleaning',
+      'Filter pressure check',
+      'Equipment inspection',
+      'Identification of developing problems before they become repairs',
       'Photo or text update after each visit on request',
     ],
     icon: 'waves',
+    relatedPosts: [
+      'why-regular-pool-maintenance-matters',
+      'cost-of-skipping-pool-maintenance',
+      'how-to-choose-a-pool-service-company-san-diego',
+    ],
     faqs: [
       {
         question: 'How often does my pool actually need to be cleaned?',
@@ -57,6 +74,8 @@ export const SERVICES: Service[] = [
     shortDesc: 'Diagnostics and repair for pumps, filters, leaks, heaters, and automation systems.',
     longDesc:
       "When something breaks, we diagnose before we quote — no guessing, no unnecessary part swaps. We repair and troubleshoot pumps, filters, salt cells, heaters, plumbing leaks, and automation/control systems across the makes and models common in San Diego County builds, old and new.",
+    whyItMatters:
+      "A small equipment problem rarely stays small — a failing pump seal, a slow leak, or a filter running past pressure keeps costing you in water, chemicals, and energy until it's addressed, and can damage other equipment on the same system. Diagnosing the actual cause before quoting means you're paying to fix the real problem, not swapping parts and hoping.",
     bullets: [
       'Pump, motor, and filter diagnostics and repair',
       'Leak detection and plumbing repair',
@@ -65,6 +84,7 @@ export const SERVICES: Service[] = [
       'Straightforward, itemized quotes before any work starts',
     ],
     icon: 'wrench',
+    relatedPosts: ['how-to-spot-a-pool-leak', 'why-professional-leak-detection-beats-guesswork'],
     faqs: [
       {
         question: 'How do I know if I need a repair versus just a cleaning?',
@@ -94,6 +114,8 @@ export const SERVICES: Service[] = [
     shortDesc: 'Pump, filter, heater, and automation upgrades sized correctly for your pool.',
     longDesc:
       'Old, inefficient equipment costs more to run and fails more often. We install and replace pumps, filters, heaters, salt systems, and automation controllers, sizing each component to your pool rather than defaulting to whatever is easiest to source — including variable-speed pump upgrades that typically cut energy costs.',
+    whyItMatters:
+      "Equipment that's undersized, aging, or mismatched to your pool works harder than it should, which shows up as higher energy bills and more frequent breakdowns. Sizing new equipment correctly the first time — rather than defaulting to whatever's on the truck — is what actually lowers your running costs and repair frequency going forward.",
     bullets: [
       'Variable-speed pump upgrades',
       'Filter replacement (cartridge, DE, and sand)',
@@ -102,6 +124,7 @@ export const SERVICES: Service[] = [
       'Smart automation and app-controlled system setup',
     ],
     icon: 'gear',
+    relatedPosts: ['are-variable-speed-pool-pumps-worth-it', 'saltwater-vs-chlorine-pools'],
     faqs: [
       {
         question: 'How do I know if equipment needs replacing instead of repairing?',
@@ -127,18 +150,22 @@ export const SERVICES: Service[] = [
   },
   {
     slug: 'green-pool-recovery',
-    name: 'Green Pool Recovery & Seasonal Openings',
-    shortDesc: 'Bringing neglected or algae-heavy pools back to swim-ready, plus seasonal opening/closing service.',
+    name: 'Green Pool Recovery & One-Time Cleaning',
+    shortDesc:
+      'Bringing neglected or algae-heavy pools back to swim-ready, plus one-time cleanups after vacation, a storm, or a move.',
     longDesc:
-      "Inherited a green pool, coming back from vacation to a mess, or need a pool opened or closed for the season? We handle full green-to-clean recovery — shock treatment, filtration cycling, and repeat balancing until the water is clear — as well as seasonal opening and closing visits for pools that aren't run year-round.",
+      "Inherited a green pool, coming back from vacation to a mess, or need a one-time deep clean for a move-in, move-out, or after a storm blew debris in? We handle full green-to-clean recovery — shock treatment, filtration cycling, and repeat balancing until the water is clear — plus one-time cleanings for pools that don't need ongoing weekly service. San Diego's climate means most pools run close to year-round, so this is built around one-off resets, not seasonal shutdowns.",
+    whyItMatters:
+      "A green pool doesn't fix itself, and the longer algae is left to establish, the more treatment and filtration time it takes to reverse — plus stagnant, untreated water isn't something you want sitting in a backyard. Getting ahead of it with a structured shock-and-filter recovery gets the pool back to swim-ready and back on a stable chemistry baseline instead of lingering in a half-fixed state.",
     bullets: [
       'Full algae and green-pool recovery',
       'Shock treatment and multi-visit rebalancing',
-      'Seasonal opening service',
-      'Seasonal closing and winterization',
+      'Storm and debris cleanup',
+      'Vacation and extended-absence recovery',
       'One-time deep cleans for move-in/move-out',
     ],
     icon: 'sun',
+    relatedPosts: ['how-long-to-clear-a-green-pool'],
     faqs: [
       {
         question: 'How long does it take to clear a green pool?',

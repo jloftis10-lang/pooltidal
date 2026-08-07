@@ -17,5 +17,12 @@ export default defineConfig({
     plugins: [tailwindcss()],
   },
 
-  integrations: [sitemap()],
+  integrations: [
+    sitemap({
+      // /thank-you is a post-submission confirmation page, not content —
+      // noindex'd in Layout.astro and excluded here so it never shows up
+      // as a landing page in search results.
+      filter: (page) => !page.endsWith('/thank-you/'),
+    }),
+  ],
 });

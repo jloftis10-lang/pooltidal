@@ -15,6 +15,8 @@ export function getStaticPaths() {
 
 const { location } = Astro.props;
 const nearby = getNearbyLocations(location.slug, 4);
+const quoteHref = `/contact?city=${location.slug}`;
+const quoteLabel = `Get a Pool Service Quote in ${location.name}`;
 
 const breadcrumbSchema = {
   '@context': 'https://schema.org',
@@ -30,6 +32,19 @@ const breadcrumbSchema = {
     },
   ],
 };
+
+const faqSchema = location.faq && {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: location.faq.map((faq) => ({
+    '@type': 'Question',
+    name: faq.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: faq.answer,
+    },
+  })),
+};
 ---
 
 <Layout
@@ -37,6 +52,7 @@ const breadcrumbSchema = {
   description={`Weekly pool cleaning, repair, and equipment service in ${location.name}, CA. Local techs, clear pricing, free quotes.`}
 >
   <script type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbSchema)} />
+  {faqSchema && <script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />}
 
   <section class="mx-auto max-w-4xl px-6 py-16">
     <nav class="text-sm text-muted">
@@ -52,22 +68,56 @@ const breadcrumbSchema = {
     <h1 class="mt-3 font-display text-3xl font-semibold text-ink md:text-4xl">
       Pool Cleaning &amp; Service in {location.name}, CA
     </h1>
-    <p class="mt-4 text-lg text-muted">{location.about}</p>
+    <p class="mt-4 text-lg text-muted">{location.intro ?? location.about}</p>
 
     <div class="mt-8 rounded-2xl border border-line bg-surface p-6">
       <h2 class="font-display text-lg font-semibold text-ink">Pool care notes for {location.name}</h2>
       <p class="mt-2 text-muted">{location.poolNote}</p>
+      {location.serviceNotes && <p class="mt-3 text-muted">{location.serviceNotes}</p>}
     </div>
+
+    {
+      location.localPoolChallenges && location.localPoolChallenges.length > 0 && (
+        <div class="mt-10">
+          <h2 class="font-display text-lg font-semibold text-ink">
+            Local pool care considerations in {location.name}
+          </h2>
+          <ul class="mt-4 space-y-3">
+            {location.localPoolChallenges.map((item) => (
+              <li class="flex items-start gap-3 text-muted">
+                <Icon name="check" class="mt-0.5 h-5 w-5 flex-shrink-0 text-primary" />
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )
+    }
+
+    {
+      location.neighborhoods && location.neighborhoods.length > 0 && (
+        <div class="mt-10">
+          <h2 class="font-display text-lg font-semibold text-ink">Neighborhoods we serve</h2>
+          <div class="mt-4 flex flex-wrap gap-2">
+            {location.neighborhoods.map((n) => (
+              <span class="rounded-full border border-line px-3 py-1 text-sm text-ink">{n}</span>
+            ))}
+          </div>
+        </div>
+      )
+    }
 
     <div class="mt-10 flex flex-wrap gap-4">
       <a
-        href="/contact"
+        href={quoteHref}
+        onclick={`window.trackEvent && window.trackEvent('quote_cta_click', { location: '${location.slug}' })`}
         class="rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white hover:bg-primary-dark"
       >
-        Get a Free Quote in {location.name}
+        {quoteLabel}
       </a>
       <a
         href={BUSINESS.phoneHref}
+        onclick={`window.trackEvent && window.trackEvent('phone_click', { location: '${location.slug}' })`}
         class="rounded-full border border-line px-6 py-3 text-sm font-semibold text-ink hover:border-primary hover:text-primary"
       >
         Call {BUSINESS.phone}
@@ -81,6 +131,7 @@ const breadcrumbSchema = {
           SERVICES.map((service) => (
             <a
               href={`/services/${service.slug}`}
+              onclick={`window.trackEvent && window.trackEvent('service_cta_click', { service: '${service.slug}', location: '${location.slug}' })`}
               class="flex items-start gap-3 rounded-xl border border-line bg-surface p-4 hover:border-primary"
             >
               <Icon name={service.icon} class="mt-0.5 h-5 w-5 flex-shrink-0 text-primary" />
@@ -95,6 +146,30 @@ const breadcrumbSchema = {
     </div>
 
     {
+      location.faq && location.faq.length > 0 && (
+        <div class="mt-14">
+          <h2 class="font-display text-xl font-semibold text-ink">
+            Frequently asked questions for {location.name}
+          </h2>
+          <div class="mt-4 divide-y divide-line rounded-2xl border border-line bg-surface">
+            {location.faq.map((faq) => (
+              <details class="group p-5">
+                <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-medium text-ink marker:content-none">
+                  {faq.question}
+                  <Icon
+                    name="chevron-down"
+                    class="h-5 w-5 flex-shrink-0 text-primary transition-transform group-open:rotate-180"
+                  />
+                </summary>
+                <p class="mt-3 text-sm text-muted">{faq.answer}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      )
+    }
+
+    {
       nearby.length > 0 && (
         <div class="mt-14">
           <h2 class="font-display text-xl font-semibold text-ink">Also serving nearby</h2>
@@ -102,6 +177,7 @@ const breadcrumbSchema = {
             {nearby.map((n) => (
               <a
                 href={`/locations/${n.slug}`}
+                onclick={`window.trackEvent && window.trackEvent('location_cta_click', { location: '${n.slug}' })`}
                 class="rounded-full border border-line px-4 py-2 text-sm text-ink hover:border-primary hover:text-primary"
               >
                 {n.name}
@@ -116,5 +192,8 @@ const breadcrumbSchema = {
   <CTASection
     heading={`Get a free pool service quote in ${location.name}`}
     subheading="Tell us a bit about your pool and we'll follow up with a plan and pricing."
+    ctaHref={quoteHref}
+    ctaLabel={quoteLabel}
+    trackingLocation={`location-footer-${location.slug}`}
   />
 </Layout>

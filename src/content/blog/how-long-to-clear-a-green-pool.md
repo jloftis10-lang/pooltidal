@@ -3,6 +3,8 @@ title: "How Long Does It Take to Clear a Green Pool? What to Expect From Recover
 description: "Green pool recovery isn't instant, but it's also not a mystery. Here's what actually happens during the process and what determines how long it takes."
 publishDate: 2026-08-11
 tags: ["Green Pool Recovery", "Pool Maintenance"]
+cluster: "Pool Problems"
+relatedService: "green-pool-recovery"
 ---
 
 A green pool looks like a disaster, but it's rarely a permanent one. What it is, though, is a process — not a single treatment that clears the water overnight. If you've just discovered your pool has gone green (after a vacation, a stretch of neglect, or inheriting a pool that hasn't been touched in a while), here's what actually happens during recovery and roughly how long it takes.

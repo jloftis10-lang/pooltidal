@@ -176,6 +176,18 @@ const breadcrumbSchema = {
         <p id="result-gallons" class="mt-1 font-display text-4xl font-semibold text-primary">—</p>
         <p id="result-cubic-feet" class="mt-1 text-sm text-muted"></p>
       </div>
+
+      <div id="result-cta" class="mt-4 hidden rounded-xl border border-line bg-canvas p-5 text-center">
+        <p class="text-sm text-muted">Want a service plan based on your pool?</p>
+        <a
+          id="result-cta-link"
+          href="/contact?service=weekly-cleaning-maintenance"
+          onclick="window.trackEvent && window.trackEvent('quote_cta_click', { location: 'calculator' })"
+          class="mt-3 inline-block rounded-full bg-accent-strong px-6 py-3 text-sm font-semibold text-white hover:opacity-90"
+        >
+          Get My Pool Quote
+        </a>
+      </div>
     </form>
 
     <div class="mt-8 rounded-2xl border border-line bg-surface p-6 text-sm text-muted">
@@ -236,6 +248,10 @@ const breadcrumbSchema = {
 
   const resultGallons = document.getElementById('result-gallons') as HTMLElement;
   const resultCubicFeet = document.getElementById('result-cubic-feet') as HTMLElement;
+  const resultCta = document.getElementById('result-cta') as HTMLElement;
+  const resultCtaLink = document.getElementById('result-cta-link') as HTMLAnchorElement;
+
+  let hasTrackedCompletion = false;
 
   function currentShape(): string {
     return (form.querySelector('input[name="shape"]:checked') as HTMLInputElement)?.value ?? 'rectangular';
@@ -275,11 +291,20 @@ const breadcrumbSchema = {
     const gallons = cubicFeet * 7.5;
 
     if (gallons > 0) {
-      resultGallons.textContent = `${Math.round(gallons).toLocaleString()} gal`;
+      const roundedGallons = Math.round(gallons);
+      resultGallons.textContent = `${roundedGallons.toLocaleString()} gal`;
       resultCubicFeet.textContent = `${Math.round(cubicFeet).toLocaleString()} cubic feet`;
+      resultCta.classList.remove('hidden');
+      resultCtaLink.href = `/contact?service=weekly-cleaning-maintenance&gallons=${roundedGallons}`;
+
+      if (!hasTrackedCompletion) {
+        hasTrackedCompletion = true;
+        window.trackEvent?.('calculator_completed', { gallons: roundedGallons });
+      }
     } else {
       resultGallons.textContent = '—';
       resultCubicFeet.textContent = '';
+      resultCta.classList.add('hidden');
     }
   }
 

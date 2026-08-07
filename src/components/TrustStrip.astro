@@ -1,0 +1,17 @@
+---
+import Icon from './Icon.astro';
+import { TRUST_ITEMS } from '../lib/trust';
+---
+
+<div class="border-b border-line bg-surface">
+  <ul class="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-8 gap-y-3 px-6 py-5 sm:justify-between">
+    {
+      TRUST_ITEMS.map((item) => (
+        <li class="flex items-center gap-2 text-sm font-medium text-ink">
+          <Icon name={item.icon} class="h-5 w-5 flex-shrink-0 text-primary" />
+          {item.label}
+        </li>
+      ))
+    }
+  </ul>
+</div>

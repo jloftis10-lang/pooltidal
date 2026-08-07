@@ -1,5 +1,8 @@
 ---
 import { BUSINESS } from '../lib/business';
+import { HEADER_LOGO } from '../lib/branding';
+import Icon from './Icon.astro';
+import MobileMenu from './MobileMenu.astro';
 
 const navLinks = [
   { href: '/services', label: 'Services' },
@@ -14,9 +17,9 @@ const navLinks = [
   <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-3">
     <a href="/" class="flex-shrink-0">
       <img
-        src="/logo-full.png"
+        src={HEADER_LOGO}
         alt={`${BUSINESS.name} — Pool Service — San Diego, CA`}
-        class="h-16 w-auto"
+        class="h-14 w-auto md:h-16"
         width="1117"
         height="855"
       />
@@ -32,21 +35,17 @@ const navLinks = [
       }
     </nav>
 
-    <a
-      href={BUSINESS.phoneHref}
-      class="rounded-full bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary-dark"
-    >
-      {BUSINESS.phone}
-    </a>
+    <div class="flex items-center gap-3">
+      <a
+        href={BUSINESS.phoneHref}
+        onclick="window.trackEvent && window.trackEvent('phone_click')"
+        aria-label={`Call ${BUSINESS.phone}`}
+        class="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full bg-primary text-white hover:bg-primary-dark sm:h-auto sm:w-auto sm:gap-2 sm:px-4 sm:py-2"
+      >
+        <Icon name="phone" class="h-5 w-5 sm:hidden" />
+        <span class="hidden text-sm font-semibold sm:inline">{BUSINESS.phone}</span>
+      </a>
+      <MobileMenu />
+    </div>
   </div>
-
-  <nav class="flex items-center gap-4 overflow-x-auto border-t border-line px-6 py-2 md:hidden">
-    {
-      navLinks.map((link) => (
-        <a href={link.href} class="whitespace-nowrap text-sm font-medium text-ink hover:text-primary">
-          {link.label}
-        </a>
-      ))
-    }
-  </nav>
 </header>

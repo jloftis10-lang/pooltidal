@@ -13,7 +13,10 @@ interface Props {
     | 'instagram'
     | 'facebook'
     | 'tiktok'
-    | 'chevron-down';
+    | 'chevron-down'
+    | 'droplet'
+    | 'menu'
+    | 'close';
   class?: string;
 }
 
@@ -41,6 +44,9 @@ const paths: Record<Props['name'], string> = {
   tiktok:
     'M16.6 5.82c-1.12-1.08-1.67-2.64-1.75-4.17-1.3.01-2.6 0-3.91.02-.03 4.02-.01 8.04-.02 12.07-.01 1.79.03 3.57-.07 5.36-.01.39-.22.73-.41 1.06-.58.95-1.65 1.6-2.77 1.61-1.68.15-3.26-1.23-3.5-2.87-.01-.54-.07-1.1.14-1.61.25-.71.73-1.34 1.36-1.75.87-.6 2.03-.69 3.02-.37 0-1.48.06-2.96.04-4.44-2.17-.41-4.49.28-6.15 1.72-1.46 1.24-2.4 3.06-2.58 4.96-.02.49-.01.99.01 1.49.21 2.34 1.63 4.52 3.65 5.71 1.22.72 2.65 1.11 4.08 1.03 2.33-.04 4.6-1.29 5.91-3.21.81-1.15 1.27-2.54 1.35-3.94.03-2.91.01-5.83.02-8.75.52.34 1.05.67 1.62.93 1.31.62 2.76.92 4.2.97V6.5c-1.55-.17-3.12-.68-4.24-1.79z',
   'chevron-down': 'M6 9l6 6 6-6',
+  droplet: 'M12 2.69 17.66 8.35a8 8 0 1 1-11.31 0L12 2.69z',
+  menu: 'M3 6h18M3 12h18M3 18h18',
+  close: 'M18 6 6 18M6 6l12 12',
 };
 ---
 
@@ -54,13 +60,15 @@ const paths: Record<Props['name'], string> = {
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
+      aria-hidden="true"
+      focusable="false"
     >
       <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
       <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
       <line x1="17.5" y1="6.5" x2="17.5" y2="6.5" />
     </svg>
   ) : isFilled ? (
-    <svg class={className} viewBox="0 0 24 24" fill="currentColor">
+    <svg class={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
       <path d={paths[name]} />
     </svg>
   ) : (
@@ -72,6 +80,8 @@ const paths: Record<Props['name'], string> = {
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
+      aria-hidden="true"
+      focusable="false"
     >
       <path d={paths[name]} />
     </svg>

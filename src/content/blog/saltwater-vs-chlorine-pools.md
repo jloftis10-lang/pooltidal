@@ -3,6 +3,8 @@ title: "Saltwater vs. Chlorine Pools: Which Is Right for Your San Diego Backyard
 description: "Saltwater and chlorine pools both use chlorine to sanitize — the difference is where it comes from. Here's how to think about the tradeoffs before you switch."
 publishDate: 2026-08-04
 tags: ["Equipment", "Pool Maintenance"]
+cluster: "Pool Equipment"
+relatedService: "equipment-installation"
 ---
 
 "Saltwater pool" is a bit of a misnomer — saltwater pools are still sanitized by chlorine. The difference is where that chlorine comes from: a saltwater system uses a salt cell to generate chlorine continuously from dissolved salt, instead of you adding chlorine tablets, liquid, or granules by hand. Both approaches work. The right one depends on what you'd rather manage.
