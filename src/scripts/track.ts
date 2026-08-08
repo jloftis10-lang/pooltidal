@@ -8,7 +8,10 @@ export type TrackedEvent =
   | 'quote_form_submitted'
   | 'service_cta_click'
   | 'location_cta_click'
-  | 'calculator_completed';
+  | 'calculator_completed'
+  | 'cost_calculator_started'
+  | 'cost_calculator_completed'
+  | 'exact_quote_requested';
 
 type EventProps = Record<string, string | number | boolean>;
 

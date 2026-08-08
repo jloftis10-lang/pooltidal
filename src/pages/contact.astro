@@ -15,12 +15,12 @@ const thankYouUrl = `${BUSINESS.siteUrl}/thank-you`;
 ---
 
 <Layout
-  title="Contact Pool Tidal | Get a Free Pool Service Quote"
-  description="Get a free pool cleaning, repair, or service quote from Pool Tidal. Serving San Diego County."
+  title="Contact Pool Tidal | Get a Pool Service Quote"
+  description="Get a pool service quote from Pool Tidal — weekly cleaning, repair, or service. Serving San Diego County."
 >
   <section class="mx-auto max-w-5xl px-6 py-16">
     <span class="text-sm font-semibold uppercase tracking-wide text-primary">Contact</span>
-    <h1 class="mt-3 font-display text-3xl font-semibold text-ink md:text-4xl">Get a free quote</h1>
+    <h1 class="mt-3 font-display text-3xl font-semibold text-ink md:text-4xl">Get a Pool Service Quote</h1>
     <p class="mt-4 max-w-2xl text-lg text-muted">
       Tell us about your pool and where you're located, and we'll follow up with a plan and pricing.
     </p>
@@ -74,6 +74,13 @@ const thankYouUrl = `${BUSINESS.siteUrl}/thank-you`;
         <input type="hidden" name="_captcha" value="true" />
         <input type="hidden" name="_next" value={thankYouUrl} />
         <input type="text" name="_honey" class="hidden" tabindex="-1" autocomplete="off" />
+
+        {/* Populated from sessionStorage by src/scripts/attribution.ts — blank if no campaign params were ever seen this session. */}
+        <input type="hidden" name="utm_source" id="utm_source" />
+        <input type="hidden" name="utm_medium" id="utm_medium" />
+        <input type="hidden" name="utm_campaign" id="utm_campaign" />
+        <input type="hidden" name="utm_content" id="utm_content" />
+        <input type="hidden" name="landing_page" id="landing_page" />
 
         <div class="grid gap-4 sm:grid-cols-2">
           <div>
@@ -173,7 +180,7 @@ const thankYouUrl = `${BUSINESS.siteUrl}/thank-you`;
           type="submit"
           class="rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white hover:bg-primary-dark"
         >
-          Request a Quote
+          Get My Pool Service Quote
         </button>
       </form>
     </div>
@@ -181,6 +188,19 @@ const thankYouUrl = `${BUSINESS.siteUrl}/thank-you`;
 </Layout>
 
 <script>
+  import { getAttribution } from '../scripts/attribution';
+
+  // Fill in whatever utm/landing-page attribution this session captured
+  // (see src/scripts/attribution.ts) — fields stay blank if none was ever
+  // seen, which FormSubmit just omits from the email.
+  const attribution = getAttribution();
+  (['utm_source', 'utm_medium', 'utm_campaign', 'utm_content'] as const).forEach((key) => {
+    const field = document.getElementById(key) as HTMLInputElement | null;
+    if (field && attribution[key]) field.value = attribution[key] as string;
+  });
+  const landingPageField = document.getElementById('landing_page') as HTMLInputElement | null;
+  if (landingPageField && attribution.landing_path) landingPageField.value = attribution.landing_path;
+
   // Preselect service/city from ?service=<slug> and/or ?city=<slug> query
   // params (e.g. links from a service or location page), matched against
   // each <option>'s data-slug rather than its visible value/label.
@@ -200,12 +220,57 @@ const thankYouUrl = `${BUSINESS.siteUrl}/thank-you`;
   preselect('service', serviceSlug);
   preselect('location', citySlug);
 
-  // Carry the pool volume calculator's result into the message field so it
-  // reaches us with the request, without adding a dedicated form field.
+  // Carry context from the pool volume calculator and/or the pool service
+  // cost calculator into the message field so it reaches us with the
+  // request, without adding dedicated form fields or making the visitor
+  // re-type anything they already told us.
+  const summaryLines: string[] = [];
+
   if (gallons && /^\d+$/.test(gallons)) {
+    summaryLines.push(`Estimated pool volume from the pool volume calculator: ${Number(gallons).toLocaleString()} gallons.`);
+  }
+
+  const POOL_SIZE_LABEL: Record<string, string> = {
+    small: 'Small',
+    medium: 'Medium',
+    large: 'Large',
+    'not-sure': 'Not sure',
+  };
+  const POOL_TYPE_LABEL: Record<string, string> = {
+    chlorine: 'Chlorine',
+    saltwater: 'Saltwater',
+    'not-sure': 'Not sure',
+  };
+  const CONDITION_LABEL: Record<string, string> = {
+    clear: 'Clear',
+    'slightly-cloudy': 'Slightly cloudy',
+    'green-algae': 'Green/algae',
+    'not-serviced-recently': "Hasn't been serviced recently",
+    'not-sure': 'Not sure',
+  };
+
+  const poolSize = params.get('poolSize');
+  const poolType = params.get('poolType');
+  const spa = params.get('spa');
+  const condition = params.get('condition');
+  const estRange = params.get('estRange');
+
+  if (poolSize || poolType || spa || condition || estRange) {
+    const details: string[] = [];
+    if (poolSize && POOL_SIZE_LABEL[poolSize]) details.push(`Pool size: ${POOL_SIZE_LABEL[poolSize]}`);
+    if (poolType && POOL_TYPE_LABEL[poolType]) details.push(`Pool type: ${POOL_TYPE_LABEL[poolType]}`);
+    if (spa === 'yes') details.push('Has an attached spa');
+    if (condition && CONDITION_LABEL[condition]) details.push(`Current condition: ${CONDITION_LABEL[condition]}`);
+    if (estRange) details.push(`Calculator estimate shown: $${estRange.replace('-', '–')}`);
+    if (details.length > 0) {
+      summaryLines.push(`From the pool service cost calculator — ${details.join('; ')}.`);
+    }
+  }
+
+  if (summaryLines.length > 0) {
     const message = document.getElementById('message') as HTMLTextAreaElement | null;
     if (message && !message.value) {
-      message.value = `Estimated pool volume from the pool volume calculator: ${Number(gallons).toLocaleString()} gallons.`;
+      message.value = summaryLines.join('\n');
     }
   }
 

@@ -1,0 +1,424 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+import CTASection from '../components/CTASection.astro';
+import { BUSINESS } from '../lib/business';
+import { LOCATIONS } from '../lib/locations';
+import { getService } from '../lib/services';
+
+const weeklyService = getService('weekly-cleaning-maintenance');
+
+const faqs = [
+  {
+    question: 'Is this an exact price?',
+    answer:
+      "No — it's an estimated range based on typical pool size, condition, equipment, and service type. Final pricing depends on seeing the actual pool, so the fastest way to get an exact number is to request a quote.",
+  },
+  {
+    question: 'Why is there a range instead of one number?',
+    answer:
+      'Two pools that look similar on paper (same size, same pool type) can need very different amounts of work depending on access, equipment condition, and how the pool has been maintained — a range reflects that honestly instead of guessing a single figure.',
+  },
+  {
+    question: 'Does this calculator cover pool repairs?',
+    answer:
+      "No — this tool estimates recurring weekly service or one-time/green-pool cleaning costs. For a pump, filter, or leak repair, request a quote directly and we'll diagnose it before quoting.",
+  },
+];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((faq) => ({
+    '@type': 'Question',
+    name: faq.question,
+    acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+  })),
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: BUSINESS.siteUrl },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: 'Pool Service Cost Calculator',
+      item: `${BUSINESS.siteUrl}/pool-service-cost`,
+    },
+  ],
+};
+---
+
+<Layout
+  title="San Diego Pool Service Cost Calculator | Pool Tidal"
+  description="Estimate what weekly pool service or a one-time/green pool cleanup typically costs in San Diego County. Get an instant range, then request an exact quote."
+>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbSchema)} />
+
+  <section class="mx-auto max-w-3xl px-6 py-16">
+    <nav class="text-sm text-muted">
+      <a href="/" class="hover:text-primary">Home</a> /
+      <span class="text-ink">Pool Service Cost Calculator</span>
+    </nav>
+
+    <span class="mt-4 block text-sm font-semibold uppercase tracking-wide text-primary">Free Tool</span>
+    <h1 class="mt-3 font-display text-3xl font-semibold text-ink md:text-4xl">
+      San Diego Pool Service Cost Calculator
+    </h1>
+    <p class="mt-4 text-lg text-muted">
+      Answer a few quick questions about your pool to see an estimated cost range. This is a
+      starting point, not a quote — final pricing depends on pool condition, size, equipment,
+      access, and service needs.
+    </p>
+    <p class="mt-2 text-sm text-muted-soft">
+      Don't know your pool's size in gallons? Try the
+      <a href="/pool-volume-calculator" class="font-medium text-primary hover:text-primary-dark">pool volume calculator</a>.
+    </p>
+
+    <form id="cost-calculator" class="mt-10 space-y-6 rounded-2xl border border-line bg-surface p-6">
+      <div>
+        <label for="city" class="text-sm font-medium text-ink">Where is the pool?</label>
+        <select
+          id="city"
+          class="mt-1 w-full rounded-lg border border-line bg-canvas px-3 py-2 text-ink focus:border-primary focus:outline-none"
+        >
+          <option value="">Select your city (optional)</option>
+          {
+            LOCATIONS.map((location) => (
+              <option value={location.name} data-slug={location.slug}>
+                {location.name}
+              </option>
+            ))
+          }
+        </select>
+      </div>
+
+      <fieldset>
+        <legend class="text-sm font-medium text-ink">What type of pool do you have?</legend>
+        <div class="mt-2 grid grid-cols-3 gap-2">
+          <label class="calc-option cursor-pointer rounded-lg border border-line px-3 py-2 text-center text-sm font-medium text-ink has-[:checked]:border-primary has-[:checked]:bg-canvas has-[:checked]:text-primary">
+            <input type="radio" name="pool-type" value="chlorine" checked class="sr-only" />
+            Chlorine
+          </label>
+          <label class="calc-option cursor-pointer rounded-lg border border-line px-3 py-2 text-center text-sm font-medium text-ink has-[:checked]:border-primary has-[:checked]:bg-canvas has-[:checked]:text-primary">
+            <input type="radio" name="pool-type" value="saltwater" class="sr-only" />
+            Saltwater
+          </label>
+          <label class="calc-option cursor-pointer rounded-lg border border-line px-3 py-2 text-center text-sm font-medium text-ink has-[:checked]:border-primary has-[:checked]:bg-canvas has-[:checked]:text-primary">
+            <input type="radio" name="pool-type" value="not-sure" class="sr-only" />
+            Not sure
+          </label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend class="text-sm font-medium text-ink">Approximate pool size</legend>
+        <div class="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-4">
+          <label class="calc-option cursor-pointer rounded-lg border border-line px-3 py-2 text-center text-sm font-medium text-ink has-[:checked]:border-primary has-[:checked]:bg-canvas has-[:checked]:text-primary">
+            <input type="radio" name="pool-size" value="small" class="sr-only" />
+            Small
+          </label>
+          <label class="calc-option cursor-pointer rounded-lg border border-line px-3 py-2 text-center text-sm font-medium text-ink has-[:checked]:border-primary has-[:checked]:bg-canvas has-[:checked]:text-primary">
+            <input type="radio" name="pool-size" value="medium" checked class="sr-only" />
+            Medium
+          </label>
+          <label class="calc-option cursor-pointer rounded-lg border border-line px-3 py-2 text-center text-sm font-medium text-ink has-[:checked]:border-primary has-[:checked]:bg-canvas has-[:checked]:text-primary">
+            <input type="radio" name="pool-size" value="large" class="sr-only" />
+            Large
+          </label>
+          <label class="calc-option cursor-pointer rounded-lg border border-line px-3 py-2 text-center text-sm font-medium text-ink has-[:checked]:border-primary has-[:checked]:bg-canvas has-[:checked]:text-primary">
+            <input type="radio" name="pool-size" value="not-sure" class="sr-only" />
+            Not sure
+          </label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend class="text-sm font-medium text-ink">Do you have an attached spa?</legend>
+        <div class="mt-2 grid grid-cols-2 gap-2">
+          <label class="calc-option cursor-pointer rounded-lg border border-line px-3 py-2 text-center text-sm font-medium text-ink has-[:checked]:border-primary has-[:checked]:bg-canvas has-[:checked]:text-primary">
+            <input type="radio" name="spa" value="no" checked class="sr-only" />
+            No
+          </label>
+          <label class="calc-option cursor-pointer rounded-lg border border-line px-3 py-2 text-center text-sm font-medium text-ink has-[:checked]:border-primary has-[:checked]:bg-canvas has-[:checked]:text-primary">
+            <input type="radio" name="spa" value="yes" class="sr-only" />
+            Yes
+          </label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend class="text-sm font-medium text-ink">What kind of service do you need?</legend>
+        <div class="mt-2 grid grid-cols-2 gap-2">
+          <label class="calc-option cursor-pointer rounded-lg border border-line px-3 py-2 text-center text-sm font-medium text-ink has-[:checked]:border-primary has-[:checked]:bg-canvas has-[:checked]:text-primary">
+            <input type="radio" name="service" value="weekly-maintenance" checked class="sr-only" />
+            Weekly maintenance
+          </label>
+          <label class="calc-option cursor-pointer rounded-lg border border-line px-3 py-2 text-center text-sm font-medium text-ink has-[:checked]:border-primary has-[:checked]:bg-canvas has-[:checked]:text-primary">
+            <input type="radio" name="service" value="green-pool-cleanup" class="sr-only" />
+            Green pool cleanup
+          </label>
+          <label class="calc-option cursor-pointer rounded-lg border border-line px-3 py-2 text-center text-sm font-medium text-ink has-[:checked]:border-primary has-[:checked]:bg-canvas has-[:checked]:text-primary">
+            <input type="radio" name="service" value="one-time-service" class="sr-only" />
+            One-time service
+          </label>
+          <label class="calc-option cursor-pointer rounded-lg border border-line px-3 py-2 text-center text-sm font-medium text-ink has-[:checked]:border-primary has-[:checked]:bg-canvas has-[:checked]:text-primary">
+            <input type="radio" name="service" value="not-sure" class="sr-only" />
+            Not sure
+          </label>
+        </div>
+      </fieldset>
+
+      <fieldset id="field-condition">
+        <legend class="text-sm font-medium text-ink">Current pool condition</legend>
+        <div class="mt-2 grid grid-cols-2 gap-2">
+          <label class="calc-option cursor-pointer rounded-lg border border-line px-3 py-2 text-center text-sm font-medium text-ink has-[:checked]:border-primary has-[:checked]:bg-canvas has-[:checked]:text-primary">
+            <input type="radio" name="condition" value="clear" checked class="sr-only" />
+            Clear
+          </label>
+          <label class="calc-option cursor-pointer rounded-lg border border-line px-3 py-2 text-center text-sm font-medium text-ink has-[:checked]:border-primary has-[:checked]:bg-canvas has-[:checked]:text-primary">
+            <input type="radio" name="condition" value="slightly-cloudy" class="sr-only" />
+            Slightly cloudy
+          </label>
+          <label class="calc-option cursor-pointer rounded-lg border border-line px-3 py-2 text-center text-sm font-medium text-ink has-[:checked]:border-primary has-[:checked]:bg-canvas has-[:checked]:text-primary">
+            <input type="radio" name="condition" value="green-algae" class="sr-only" />
+            Green / algae
+          </label>
+          <label class="calc-option cursor-pointer rounded-lg border border-line px-3 py-2 text-center text-sm font-medium text-ink has-[:checked]:border-primary has-[:checked]:bg-canvas has-[:checked]:text-primary">
+            <input type="radio" name="condition" value="not-serviced-recently" class="sr-only" />
+            Hasn't been serviced recently
+          </label>
+        </div>
+      </fieldset>
+
+      <div class="rounded-xl bg-canvas p-6 text-center">
+        <p id="result-label" class="text-sm font-medium uppercase tracking-wide text-muted-soft">
+          Estimated monthly service range
+        </p>
+        <p id="result-range" class="mt-1 font-display text-4xl font-semibold text-primary">—</p>
+        <ul id="result-based-on" class="mt-3 flex flex-wrap items-center justify-center gap-2 text-xs text-muted"></ul>
+        <p id="result-notes" class="mt-4 text-sm text-muted"></p>
+        <p class="mt-4 text-xs text-muted-soft">
+          Final pricing depends on pool condition, size, equipment, access, and service needs.
+        </p>
+      </div>
+
+      <div class="rounded-xl border border-line bg-canvas p-5 text-center">
+        <p class="text-sm text-muted">Want an exact quote?</p>
+        <a
+          id="exact-quote-link"
+          href="/contact"
+          class="mt-3 inline-block rounded-full bg-accent-strong px-6 py-3 text-sm font-semibold text-white hover:opacity-90"
+        >
+          Get My Exact Quote
+        </a>
+      </div>
+    </form>
+  </section>
+
+  <section class="bg-surface">
+    <div class="mx-auto max-w-3xl px-6 py-16">
+      <h2 class="font-display text-2xl font-semibold text-ink md:text-3xl">
+        What affects pool service pricing?
+      </h2>
+      <p class="mt-4 text-muted">
+        Pool service pricing generally comes down to five things: how big the pool is, its current
+        condition, what equipment it runs (chlorine vs. saltwater, whether there's an attached
+        spa), how easy the equipment pad and pool area are to access, and what kind of service is
+        needed — ongoing weekly maintenance versus a one-time or green-pool recovery job. Two pools
+        of the same size can cost differently to service if one has been neglected and the other
+        hasn't.
+      </p>
+
+      {
+        weeklyService && (
+          <>
+            <h2 class="mt-10 font-display text-2xl font-semibold text-ink md:text-3xl">
+              What's typically included in weekly pool service?
+            </h2>
+            <ul class="mt-4 grid gap-2 sm:grid-cols-2">
+              {weeklyService.bullets.slice(0, 8).map((bullet) => (
+                <li class="flex items-start gap-2 text-sm text-muted">
+                  <Icon name="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" />
+                  {bullet}
+                </li>
+              ))}
+            </ul>
+          </>
+        )
+      }
+
+      <h2 class="mt-10 font-display text-2xl font-semibold text-ink md:text-3xl">Does pool size affect cost?</h2>
+      <p class="mt-4 text-muted">
+        Yes. A larger pool holds more water, takes longer to skim, brush, and vacuum, and needs more
+        chemical volume to balance each visit — so monthly service typically costs more for a large
+        pool than a small one, all else being equal.
+      </p>
+
+      <h2 class="mt-10 font-display text-2xl font-semibold text-ink md:text-3xl">Does an attached spa affect cost?</h2>
+      <p class="mt-4 text-muted">
+        Yes. A spa is a separate body of water with its own chemistry and, often, its own jets and
+        heater — servicing it alongside the pool adds time to each visit, which is reflected in the
+        monthly rate.
+      </p>
+
+      <h2 class="mt-10 font-display text-2xl font-semibold text-ink md:text-3xl">
+        Does a saltwater pool cost more to maintain?
+      </h2>
+      <p class="mt-4 text-muted">
+        Often slightly more than a comparable chlorine pool. Saltwater systems use a salt cell to
+        generate chlorine, and that cell needs periodic inspection and cleaning as part of a
+        thorough visit — it's not a major cost difference, but it's not nothing either.
+      </p>
+
+      <h2 class="mt-10 font-display text-2xl font-semibold text-ink md:text-3xl">
+        Why does pool condition affect the initial service price?
+      </h2>
+      <p class="mt-4 text-muted">
+        A pool that's green, cloudy, or hasn't been serviced in a while usually needs extra work
+        before it can settle into a normal routine — more chemical treatment, more filtration
+        cycles, sometimes multiple visits to fully clear. That upfront recovery work is priced
+        separately from the ongoing monthly rate, which reflects steady-state maintenance on a
+        pool that's already in good shape.
+      </p>
+
+      <h2 class="mt-10 font-display text-2xl font-semibold text-ink md:text-3xl">
+        Weekly vs. one-time pool service — which do you need?
+      </h2>
+      <p class="mt-4 text-muted">
+        If a pool is in regular use and you want consistent, hands-off upkeep, weekly service is
+        the standard choice — it's what keeps a pool from drifting out of balance in the first
+        place. One-time service fits a specific event instead: returning from vacation, a
+        move-in/move-out, storm cleanup, or clearing a pool that's turned green after being
+        neglected. Many one-time customers move to weekly service afterward once the pool is back
+        to a normal baseline.
+      </p>
+
+      <div class="mt-12">
+        <h2 class="font-display text-xl font-semibold text-ink">Frequently asked questions</h2>
+        <div class="mt-4 divide-y divide-line rounded-2xl border border-line bg-canvas">
+          {
+            faqs.map((faq) => (
+              <details class="group p-5">
+                <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-medium text-ink marker:content-none">
+                  {faq.question}
+                  <Icon
+                    name="chevron-down"
+                    class="h-5 w-5 flex-shrink-0 text-primary transition-transform group-open:rotate-180"
+                  />
+                </summary>
+                <p class="mt-3 text-sm text-muted">{faq.answer}</p>
+              </details>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CTASection
+    heading="Ready for pool care you don't have to think about?"
+    subheading="Get an exact quote based on your actual pool — no obligation."
+    trackingLocation="pool-service-cost-footer"
+  />
+</Layout>
+
+<script>
+  import { estimatePoolServiceCost, type PoolServiceCalculatorInput } from '../lib/pool-service-pricing';
+
+  const form = document.getElementById('cost-calculator') as HTMLFormElement;
+  const citySelect = document.getElementById('city') as HTMLSelectElement;
+  const conditionField = document.getElementById('field-condition') as HTMLElement;
+
+  const resultLabel = document.getElementById('result-label') as HTMLElement;
+  const resultRange = document.getElementById('result-range') as HTMLElement;
+  const resultBasedOn = document.getElementById('result-based-on') as HTMLElement;
+  const resultNotes = document.getElementById('result-notes') as HTMLElement;
+  const exactQuoteLink = document.getElementById('exact-quote-link') as HTMLAnchorElement;
+
+  let hasTrackedStart = false;
+  let hasTrackedCompletion = false;
+
+  function radioValue(name: string): string {
+    return (form.querySelector(`input[name="${name}"]:checked`) as HTMLInputElement)?.value ?? '';
+  }
+
+  function currency(n: number): string {
+    return `$${Math.round(n).toLocaleString()}`;
+  }
+
+  function calculate() {
+    const service = radioValue('service') as PoolServiceCalculatorInput['service'];
+
+    // Condition only matters once we know whether it's a green-pool-cleanup
+    // job (severity drives price) — hide it for weekly/one-time-service to
+    // avoid asking a question that doesn't change the estimate.
+    conditionField.classList.toggle('hidden', service !== 'green-pool-cleanup' && service !== 'not-sure');
+
+    const input: PoolServiceCalculatorInput = {
+      poolSize: radioValue('pool-size') as PoolServiceCalculatorInput['poolSize'],
+      poolType: radioValue('pool-type') as PoolServiceCalculatorInput['poolType'],
+      spa: radioValue('spa') as PoolServiceCalculatorInput['spa'],
+      service: service || 'not-sure',
+      condition: (radioValue('condition') || 'clear') as PoolServiceCalculatorInput['condition'],
+    };
+
+    const estimate = estimatePoolServiceCost(input);
+
+    resultLabel.textContent = estimate.label;
+    resultRange.textContent = `${currency(estimate.low)}–${currency(estimate.high)}${estimate.mode === 'recurring' ? ' / month' : ''}`;
+    resultBasedOn.innerHTML = '';
+    estimate.basedOn.forEach((item) => {
+      const li = document.createElement('li');
+      li.className = 'rounded-full border border-line bg-surface px-3 py-1';
+      li.textContent = item;
+      resultBasedOn.appendChild(li);
+    });
+    resultNotes.textContent = estimate.notes.join(' ');
+
+    // Both green-pool-cleanup and one-time-service map to the same service
+    // page — "Green Pool Recovery & One-Time Cleaning" covers both.
+    const serviceSlug: Record<PoolServiceCalculatorInput['service'], string> = {
+      'weekly-maintenance': 'weekly-cleaning-maintenance',
+      'not-sure': 'weekly-cleaning-maintenance',
+      'green-pool-cleanup': 'green-pool-recovery',
+      'one-time-service': 'green-pool-recovery',
+    };
+
+    const params = new URLSearchParams();
+    params.set('service', serviceSlug[input.service]);
+    const citySlug = citySelect.selectedOptions[0]?.dataset.slug;
+    if (citySlug) params.set('city', citySlug);
+    params.set('poolSize', input.poolSize);
+    params.set('poolType', input.poolType);
+    params.set('spa', input.spa);
+    params.set('condition', input.condition);
+    params.set('estRange', `${Math.round(estimate.low)}-${Math.round(estimate.high)}${estimate.mode === 'recurring' ? '/mo' : ''}`);
+    exactQuoteLink.href = `/contact?${params.toString()}`;
+
+    if (!hasTrackedStart) {
+      hasTrackedStart = true;
+      window.trackEvent?.('cost_calculator_started');
+    }
+    if (!hasTrackedCompletion) {
+      hasTrackedCompletion = true;
+      window.trackEvent?.('cost_calculator_completed', {
+        service: input.service,
+        poolSize: input.poolSize,
+      });
+    }
+  }
+
+  form.querySelectorAll('input[type="radio"]').forEach((input) => {
+    input.addEventListener('change', calculate);
+  });
+  citySelect.addEventListener('change', calculate);
+  exactQuoteLink.addEventListener('click', () => {
+    window.trackEvent?.('exact_quote_requested', { location: 'pool-service-cost' });
+  });
+
+  calculate();
+</script>

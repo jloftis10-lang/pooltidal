@@ -179,10 +179,54 @@ in one call. Call sites use inline `onclick="window.trackEvent && ..."`
 matching the rest of the site's no-framework approach. The fixed event
 vocabulary is `phone_click`, `email_click`, `quote_cta_click`,
 `quote_form_started`, `quote_form_submitted`, `service_cta_click`,
-`location_cta_click`, `calculator_completed` — reuse one of these rather
-than inventing a new event name, and **never pass name, phone, email,
-address, or message text as an event property** — only non-PII context like
-a service/location slug.
+`location_cta_click`, `calculator_completed`, `cost_calculator_started`,
+`cost_calculator_completed`, `exact_quote_requested` — reuse one of these
+rather than inventing a new event name, and **never pass name, phone,
+email, address, or message text as an event property** — only non-PII
+context like a service/location slug.
+
+`src/scripts/attribution.ts` (also imported once in `Layout.astro`)
+captures `utm_source`/`utm_medium`/`utm_campaign`/`utm_content` and the
+session's true landing page into `sessionStorage` on every page load —
+first-touch, not last-touch (a later page without utm params doesn't
+overwrite the campaign that actually brought the visitor in). `contact.astro`
+reads it back via `getAttribution()` into hidden form fields
+(`utm_source`, `utm_medium`, `utm_campaign`, `utm_content`, `landing_page`)
+right before submission, so FormSubmit emails carry lead-source context
+without a backend.
+
+## Pool service cost calculator
+
+`src/pages/pool-service-cost.astro` is the primary lead-qualification tool
+(distinct from the pool *volume* calculator below, which estimates gallons
+for chemical dosing, not price) — single-page, live-updating, same
+vanilla-JS pattern. Its pricing math lives entirely in
+`src/lib/pool-service-pricing.ts`, imported directly into the page's client
+`<script>` (Vite bundles local TS imports in client scripts fine, so the
+same `estimatePoolServiceCost()` function runs the estimate — no duplicated
+logic between a "server-rendered default" and "client-recalculated" value).
+
+**Every dollar figure in `pool-service-pricing.ts` is a placeholder**,
+clearly marked as such in comments — real Pool Tidal pricing has not been
+supplied. Before this goes live, replace the `PRICING` config's values with
+real figures; the "PRICING INPUTS REQUIRED FROM OWNER" doc block at the top
+of that file lists exactly what's needed. Never hardcode a price anywhere
+else — always route through `estimatePoolServiceCost()`.
+
+The calculator hands off to `/contact` via query params (`service`, `city`,
+`poolSize`, `poolType`, `spa`, `condition`, `estRange`) so nothing the
+visitor already entered has to be retyped — `contact.astro`'s script turns
+those into a readable one-line summary appended to the message field.
+
+## Case studies (dormant)
+
+`src/content/projects/` is a content collection (schema in
+`content.config.ts`) for real before/after job write-ups, rendered by
+`src/pages/projects/[slug].astro`. It currently has zero `.md` files, so
+`getStaticPaths()` generates zero pages — nothing is linked to it anywhere.
+**Do not add a placeholder/example entry to "fill it out."** Add a real
+`.md` file (with real before/after photos per `IMAGE-GUIDE.md`) only once
+an actual completed job exists to document.
 
 ## Pool volume calculator
 
