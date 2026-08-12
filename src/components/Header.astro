@@ -1,13 +1,12 @@
 ---
 import { BUSINESS } from '../lib/business';
 import { HEADER_LOGO } from '../lib/branding';
-import { POOLSAVR } from '../lib/poolsavr';
 import Icon from './Icon.astro';
 import MobileMenu from './MobileMenu.astro';
 
 const navLinks = [
   { href: '/services', label: 'Services' },
-  { href: '/pool-service-cost', label: 'Cost Calculator' },
+  { href: '/remodel', label: 'Remodel' },
   { href: '/locations', label: 'Service Areas' },
   { href: '/blog', label: 'Blog' },
   { href: '/about', label: 'About' },
@@ -38,16 +37,6 @@ const navLinks = [
     </nav>
 
     <div class="flex items-center gap-3">
-      <a
-        href={POOLSAVR.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        onclick="window.trackEvent && window.trackEvent('remodel_cta_click', { location: 'header' })"
-        class="hidden items-center gap-1.5 rounded-full border border-line px-3 py-1.5 text-sm font-medium text-ink hover:border-primary hover:text-primary lg:flex"
-      >
-        {POOLSAVR.navLabel}
-        <Icon name="external-link" class="h-3.5 w-3.5 flex-shrink-0" />
-      </a>
       <a
         href={BUSINESS.phoneHref}
         onclick="window.trackEvent && window.trackEvent('phone_click')"

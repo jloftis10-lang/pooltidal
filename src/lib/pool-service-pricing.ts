@@ -1,8 +1,10 @@
 /**
- * Centralized pricing model for the Pool Service Cost Calculator
- * (`/pool-service-cost`). Every dollar figure in this file is a
+ * DORMANT — not currently imported anywhere. This was the pricing model for
+ * a `/pool-service-cost` calculator page that has been removed for now.
+ * Left in place in case that feature comes back; if it's clear it won't,
+ * this file can be deleted. Every dollar figure in this file is a
  * DEVELOPMENT PLACEHOLDER, not a real Pool Tidal rate — see
- * "PRICING INPUTS REQUIRED FROM OWNER" below and in the final report.
+ * "PRICING INPUTS REQUIRED FROM OWNER" below.
  *
  * Do not hardcode any of these numbers into a page/component. Everything
  * calculator-facing should import from `estimatePoolServiceCost()` so the

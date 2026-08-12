@@ -195,28 +195,17 @@ reads it back via `getAttribution()` into hidden form fields
 right before submission, so FormSubmit emails carry lead-source context
 without a backend.
 
-## Pool service cost calculator
+## Pool service cost calculator (removed, pricing model kept dormant)
 
-`src/pages/pool-service-cost.astro` is the primary lead-qualification tool
-(distinct from the pool *volume* calculator below, which estimates gallons
-for chemical dosing, not price) — single-page, live-updating, same
-vanilla-JS pattern. Its pricing math lives entirely in
-`src/lib/pool-service-pricing.ts`, imported directly into the page's client
-`<script>` (Vite bundles local TS imports in client scripts fine, so the
-same `estimatePoolServiceCost()` function runs the estimate — no duplicated
-logic between a "server-rendered default" and "client-recalculated" value).
-
-**Every dollar figure in `pool-service-pricing.ts` is a placeholder**,
-clearly marked as such in comments — real Pool Tidal pricing has not been
-supplied. Before this goes live, replace the `PRICING` config's values with
-real figures; the "PRICING INPUTS REQUIRED FROM OWNER" doc block at the top
-of that file lists exactly what's needed. Never hardcode a price anywhere
-else — always route through `estimatePoolServiceCost()`.
-
-The calculator hands off to `/contact` via query params (`service`, `city`,
-`poolSize`, `poolType`, `spa`, `condition`, `estRange`) so nothing the
-visitor already entered has to be retyped — `contact.astro`'s script turns
-those into a readable one-line summary appended to the message field.
+A `/pool-service-cost` lead-qualification calculator (pool type/size/spa/
+service/condition → an estimated range) existed briefly and was removed —
+the `/remodel` page + PoolSavr cross-promotion took its place as the
+featured secondary CTA instead. Its pricing math is still sitting, unused,
+in `src/lib/pool-service-pricing.ts` (`estimatePoolServiceCost()`,
+**every dollar figure a clearly-marked placeholder**) in case the feature
+comes back — if it's clear it won't, delete that file. Don't resurrect a
+pricing calculator page without routing through that module rather than
+hardcoding numbers again.
 
 ## Case studies (dormant)
 

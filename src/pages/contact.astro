@@ -220,57 +220,12 @@ const thankYouUrl = `${BUSINESS.siteUrl}/thank-you`;
   preselect('service', serviceSlug);
   preselect('location', citySlug);
 
-  // Carry context from the pool volume calculator and/or the pool service
-  // cost calculator into the message field so it reaches us with the
-  // request, without adding dedicated form fields or making the visitor
-  // re-type anything they already told us.
-  const summaryLines: string[] = [];
-
+  // Carry the pool volume calculator's result into the message field so it
+  // reaches us with the request, without adding a dedicated form field.
   if (gallons && /^\d+$/.test(gallons)) {
-    summaryLines.push(`Estimated pool volume from the pool volume calculator: ${Number(gallons).toLocaleString()} gallons.`);
-  }
-
-  const POOL_SIZE_LABEL: Record<string, string> = {
-    small: 'Small',
-    medium: 'Medium',
-    large: 'Large',
-    'not-sure': 'Not sure',
-  };
-  const POOL_TYPE_LABEL: Record<string, string> = {
-    chlorine: 'Chlorine',
-    saltwater: 'Saltwater',
-    'not-sure': 'Not sure',
-  };
-  const CONDITION_LABEL: Record<string, string> = {
-    clear: 'Clear',
-    'slightly-cloudy': 'Slightly cloudy',
-    'green-algae': 'Green/algae',
-    'not-serviced-recently': "Hasn't been serviced recently",
-    'not-sure': 'Not sure',
-  };
-
-  const poolSize = params.get('poolSize');
-  const poolType = params.get('poolType');
-  const spa = params.get('spa');
-  const condition = params.get('condition');
-  const estRange = params.get('estRange');
-
-  if (poolSize || poolType || spa || condition || estRange) {
-    const details: string[] = [];
-    if (poolSize && POOL_SIZE_LABEL[poolSize]) details.push(`Pool size: ${POOL_SIZE_LABEL[poolSize]}`);
-    if (poolType && POOL_TYPE_LABEL[poolType]) details.push(`Pool type: ${POOL_TYPE_LABEL[poolType]}`);
-    if (spa === 'yes') details.push('Has an attached spa');
-    if (condition && CONDITION_LABEL[condition]) details.push(`Current condition: ${CONDITION_LABEL[condition]}`);
-    if (estRange) details.push(`Calculator estimate shown: $${estRange.replace('-', '–')}`);
-    if (details.length > 0) {
-      summaryLines.push(`From the pool service cost calculator — ${details.join('; ')}.`);
-    }
-  }
-
-  if (summaryLines.length > 0) {
     const message = document.getElementById('message') as HTMLTextAreaElement | null;
     if (message && !message.value) {
-      message.value = summaryLines.join('\n');
+      message.value = `Estimated pool volume from the pool volume calculator: ${Number(gallons).toLocaleString()} gallons.`;
     }
   }
 

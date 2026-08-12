@@ -1,14 +1,13 @@
 ---
 import Icon from './Icon.astro';
 import { BUSINESS } from '../lib/business';
-import { POOLSAVR } from '../lib/poolsavr';
 
 const navLinks = [
   { href: '/services', label: 'Services' },
   { href: '/services/weekly-cleaning-maintenance', label: 'Weekly Pool Service' },
   { href: '/services/pool-repair', label: 'Pool Repair' },
   { href: '/locations', label: 'Service Areas' },
-  { href: '/pool-service-cost', label: 'Pool Service Cost Calculator' },
+  { href: '/remodel', label: 'Remodel' },
   { href: '/pool-volume-calculator', label: 'Pool Volume Calculator' },
   { href: '/blog', label: 'Blog' },
   { href: '/about', label: 'About' },
@@ -59,16 +58,6 @@ const navLinks = [
           </a>
         ))
       }
-      <a
-        href={POOLSAVR.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        onclick="window.trackEvent && window.trackEvent('remodel_cta_click', { location: 'mobile-menu' })"
-        class="mt-1 flex items-center justify-between gap-2 rounded-lg border border-line px-3 py-3 text-base font-medium text-ink hover:bg-canvas"
-      >
-        {POOLSAVR.navLabel}
-        <Icon name="external-link" class="h-4 w-4 flex-shrink-0 text-muted-soft" />
-      </a>
     </nav>
 
     <div class="space-y-3 border-t border-line px-4 py-4">
