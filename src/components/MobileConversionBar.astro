@@ -1,0 +1,25 @@
+---
+import Icon from './Icon.astro';
+import { BUSINESS } from '../lib/business';
+---
+
+<div
+  class="fixed inset-x-0 bottom-0 z-30 flex items-stretch border-t border-line bg-surface shadow-[0_-4px_12px_rgba(16,38,46,0.08)] md:hidden"
+  style="padding-bottom: env(safe-area-inset-bottom);"
+>
+  <a
+    href={BUSINESS.phoneHref}
+    onclick="window.trackEvent && window.trackEvent('phone_click')"
+    class="flex flex-1 items-center justify-center gap-2 border-r border-line py-3 text-sm font-semibold text-ink"
+  >
+    <Icon name="phone" class="h-4 w-4 text-primary" />
+    Call
+  </a>
+  <a
+    href="/contact"
+    onclick="window.trackEvent && window.trackEvent('quote_cta_click')"
+    class="flex flex-1 items-center justify-center gap-2 bg-accent-strong py-3 text-sm font-semibold text-white"
+  >
+    Get Quote
+  </a>
+</div>

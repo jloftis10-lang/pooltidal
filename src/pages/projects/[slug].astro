@@ -1,0 +1,120 @@
+---
+// Template for real before/after job write-ups. See
+// src/content.config.ts's `projects` collection and IMAGE-GUIDE.md.
+// getStaticPaths() below generates one page per real .md file in
+// src/content/projects/ — with zero files (the current state), this
+// generates zero routes. Nothing to link to yet; add a real entry when
+// there's a real job to document.
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import { Picture } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+import CTASection from '../../components/CTASection.astro';
+import { BUSINESS } from '../../lib/business';
+import { getService } from '../../lib/services';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects', ({ data }) => !data.draft);
+  return projects.map((project) => ({
+    params: { slug: project.id },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props as { project: CollectionEntry<'projects'> };
+const { Content } = await render(project);
+const service = getService(project.data.service);
+const projectUrl = `${BUSINESS.siteUrl}/projects/${project.id}`;
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: BUSINESS.siteUrl },
+    { '@type': 'ListItem', position: 2, name: project.data.title, item: projectUrl },
+  ],
+};
+---
+
+<Layout title={`${project.data.title} | Pool Tidal`} description={project.data.problem}>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbSchema)} />
+
+  <article class="mx-auto max-w-3xl px-6 py-16">
+    <nav class="text-sm text-muted">
+      <a href="/" class="hover:text-primary">Home</a> /
+      <span class="text-ink">{project.data.title}</span>
+    </nav>
+
+    <span class="mt-4 block text-sm font-semibold uppercase tracking-wide text-primary">
+      {project.data.location}
+    </span>
+    <h1 class="mt-3 font-display text-3xl font-semibold text-ink md:text-4xl">{project.data.title}</h1>
+
+    {
+      (project.data.beforeImage || project.data.afterImage) && (
+        <div class="mt-8 grid gap-4 sm:grid-cols-2">
+          {project.data.beforeImage && (
+            <div>
+              <Picture
+                src={project.data.beforeImage}
+                alt={`${project.data.title} — before`}
+                formats={['avif', 'webp']}
+                fallbackFormat="webp"
+                widths={[400, 640, 800]}
+                sizes="(min-width: 640px) 50vw, 100vw"
+                width={800}
+                height={600}
+                class="rounded-2xl object-cover"
+              />
+              <p class="mt-2 text-center text-xs font-medium uppercase tracking-wide text-muted-soft">Before</p>
+            </div>
+          )}
+          {project.data.afterImage && (
+            <div>
+              <Picture
+                src={project.data.afterImage}
+                alt={`${project.data.title} — after`}
+                formats={['avif', 'webp']}
+                fallbackFormat="webp"
+                widths={[400, 640, 800]}
+                sizes="(min-width: 640px) 50vw, 100vw"
+                width={800}
+                height={600}
+                class="rounded-2xl object-cover"
+              />
+              <p class="mt-2 text-center text-xs font-medium uppercase tracking-wide text-muted-soft">After</p>
+            </div>
+          )}
+        </div>
+      )
+    }
+
+    <h2 class="mt-10 font-display text-xl font-semibold text-ink">The problem</h2>
+    <p class="mt-4 text-muted">{project.data.problem}</p>
+
+    <h2 class="mt-8 font-display text-xl font-semibold text-ink">What we found</h2>
+    <p class="mt-4 text-muted">{project.data.findings}</p>
+
+    <h2 class="mt-8 font-display text-xl font-semibold text-ink">Work performed</h2>
+    <p class="mt-4 text-muted">{project.data.workPerformed}</p>
+
+    <h2 class="mt-8 font-display text-xl font-semibold text-ink">Result</h2>
+    <p class="mt-4 text-muted">{project.data.result}</p>
+
+    <div class="prose mt-8">
+      <Content />
+    </div>
+
+    {
+      service && (
+        <p class="mt-10 text-sm text-muted">
+          Service provided:{' '}
+          <a href={`/services/${service.slug}`} class="font-medium text-primary hover:text-primary-dark">
+            {service.name}
+          </a>
+        </p>
+      )
+    }
+  </article>
+
+  <CTASection trackingLocation="project-detail" />
+</Layout>

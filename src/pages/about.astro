@@ -1,8 +1,23 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import CTASection from '../components/CTASection.astro';
+import Icon from '../components/Icon.astro';
+import PhotoGallery from '../components/PhotoGallery.astro';
 import { BUSINESS } from '../lib/business';
-import { LOCATIONS } from '../lib/locations';
+import { LOCATIONS, REGION_LABELS } from '../lib/locations';
+
+const regionNames = [...new Set(LOCATIONS.map((l) => l.region))].map((r) => REGION_LABELS[r]);
+const regionList =
+  regionNames.length > 1
+    ? `${regionNames.slice(0, -1).join(', ')}, and ${regionNames[regionNames.length - 1]}`
+    : regionNames.join('');
+
+const expectations = [
+  'The same route tech visits your pool, so they get to know it over time',
+  'Itemized quotes before any repair or equipment work starts — no surprise line items after',
+  'A quick note when something needs attention, not silence until the next invoice',
+  'Straight answers, including "this doesn\'t need fixing yet" when that\'s the truth',
+];
 ---
 
 <Layout
@@ -20,27 +35,76 @@ import { LOCATIONS } from '../lib/locations';
       the coast to the inland valleys.
     </p>
 
-    <h2 class="mt-10 font-display text-xl font-semibold text-ink">How we work</h2>
+    <h2 class="mt-12 font-display text-xl font-semibold text-ink">Why Pool Tidal exists</h2>
     <p class="mt-4 text-muted">
-      We keep routes tight by region so the same technician gets to know your pool over time,
-      instead of a different person showing up each week. Repair and equipment quotes are itemized
-      before any work begins — no surprise line items after the fact.
+      Pool ownership should mean more time enjoying the pool, not another maintenance task on a
+      to-do list — remembering to test chemicals, catching a filter problem before it becomes a
+      repair, figuring out who to call when something breaks. Pool Tidal exists to take that off
+      your plate: one point of contact for cleaning, chemistry, repairs, and equipment, instead of
+      juggling it yourself or piecing together different vendors for each.
     </p>
 
-    <h2 class="mt-10 font-display text-xl font-semibold text-ink">Where we work</h2>
+    <h2 class="mt-12 font-display text-xl font-semibold text-ink">How we approach pool care</h2>
     <p class="mt-4 text-muted">
-      We currently service {LOCATIONS.length} cities and communities across San Diego County.
-      <a href="/locations" class="font-medium text-primary hover:text-primary-dark">
-        See the full list of service areas
-      </a>
+      Every visit follows the same core routine — test and balance the water, skim and brush,
+      empty baskets, and check equipment for anything that looks off — so small issues get caught
+      on a normal visit instead of turning into an emergency call. When something does need
+      repair, we diagnose it first and give you an itemized quote before any work starts. No
+      guessing, and no work beyond what you approved.
+    </p>
+
+    <h2 class="mt-12 font-display text-xl font-semibold text-ink">Local service, tighter routes</h2>
+    <p class="mt-4 text-muted">
+      We organize service around {LOCATIONS.length} San Diego County cities and communities,
+      grouped into regional routes — {regionList} — rather than spreading thin across the whole
+      county with no real routing logic. Tighter
+      routes mean more predictable scheduling and a technician who actually knows the area's
+      pools, not just a name on an assignment list.
+    </p>
+
+    <h2 class="mt-12 font-display text-xl font-semibold text-ink">What customers can expect</h2>
+    <ul class="mt-4 space-y-3">
+      {
+        expectations.map((item) => (
+          <li class="flex items-start gap-3 text-muted">
+            <Icon name="check" class="mt-0.5 h-5 w-5 flex-shrink-0 text-primary" />
+            {item}
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="mt-12">
+      <PhotoGallery heading="Photos from the field" />
+    </div>
+
+    <!--
+      FOUNDER / TEAM SECTION — intentionally not rendered yet.
+
+      This is where a real founder story and photo goes once supplied.
+      Do not write a fictional founder bio, invented founding year, or
+      placeholder headshot to fill this gap — the page is designed to look
+      complete without it (see CLAUDE.md's legal-claim guardrails).
+
+      When real content is ready, add a section here with:
+        - Founder/owner name and a real photo (src/assets/images/)
+        - A genuine, specific story (why this business, background, etc.)
+        - Keep the same H2 pattern as the sections above for consistency
+    -->
+
+    <p class="mt-12 text-sm text-muted-soft">
+      Questions before booking? Call {BUSINESS.phone} or email
+      <a href={BUSINESS.emailHref} onclick="window.trackEvent && window.trackEvent('email_click')" class="text-primary hover:text-primary-dark">
+        {BUSINESS.email}
+      </a>.
+    </p>
+
+    <p class="mt-4 text-muted">
+      See the full list of
+      <a href="/locations" class="font-medium text-primary hover:text-primary-dark">service areas</a>
       or
       <a href="/contact" class="font-medium text-primary hover:text-primary-dark">reach out</a>
       if you don't see your neighborhood listed — we're adding areas regularly.
-    </p>
-
-    <p class="mt-10 text-sm text-muted-soft">
-      Questions before booking? Call {BUSINESS.phone} or email
-      <a href={BUSINESS.emailHref} class="text-primary hover:text-primary-dark">{BUSINESS.email}</a>.
     </p>
   </section>
 

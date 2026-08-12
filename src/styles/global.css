@@ -39,6 +39,28 @@ body {
   font-family: var(--font-body);
 }
 
+/* Consistent, visible keyboard focus everywhere — including on elements
+   that also set focus:outline-none for their own hover/border treatment,
+   since this box-shadow-based indicator doesn't rely on the outline
+   property at all. Mouse/touch interactions don't trigger :focus-visible,
+   so this never shows up as a "focus ring on click" annoyance. */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 /* Blog post body copy — hand-rolled instead of @tailwindcss/typography so
    it uses our own tokens/fonts instead of that plugin's defaults. */
 .prose h2 {

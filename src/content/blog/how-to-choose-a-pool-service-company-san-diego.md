@@ -3,6 +3,8 @@ title: "How to Choose a Pool Service Company in San Diego: 7 Questions to Ask"
 description: "Not all pool service companies work the same way. Here are 7 questions worth asking before you commit to one in San Diego County."
 publishDate: 2026-08-25
 tags: ["Pool Maintenance", "San Diego"]
+cluster: "San Diego Pool Care"
+relatedService: "weekly-cleaning-maintenance"
 ---
 
 San Diego County has no shortage of pool service companies, and they don't all operate the same way. Before you commit to weekly service or a repair, it's worth asking a few questions that reveal how a company actually works day to day — not just what their website says.
@@ -39,4 +41,4 @@ Not every company services every part of the county consistently. A company with
 
 The cheapest quote isn't always the best value if it comes with inconsistent techs, vague repair pricing, or spotty communication. Asking these questions upfront tends to surface the difference quickly.
 
-If you're evaluating us as part of that process: we run tight routes so the same tech knows your pool, we quote repairs before starting any work, and we cover [18 cities and communities across San Diego County](/locations) — you can see our full [services list here](/services) and read more about how we work [on our About page](/about). [Reach out](/contact) with any of the questions above; we're happy to answer them directly.
+If you're evaluating us as part of that process: we run tight routes so the same tech knows your pool, we quote repairs before starting any work, and we cover [18 cities and communities across San Diego County](/locations) — you can see our full [services list here](/services), get a ballpark figure from our [pool service cost calculator](/pool-service-cost), and read more about how we work [on our About page](/about). [Reach out](/contact) with any of the questions above; we're happy to answer them directly.

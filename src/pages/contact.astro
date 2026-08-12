@@ -8,26 +8,79 @@ import { SERVICES } from '../lib/services';
 // Contact form posts to FormSubmit (https://formsubmit.co) — a no-backend
 // form relay that emails submissions to BUSINESS.email. The FIRST
 // submission triggers a one-time "activate this form" confirmation email
-// that must be clicked before further submissions deliver.
+// that must be clicked before further submissions deliver. _next sends
+// the visitor to /thank-you after a successful submission.
 const formAction = `https://formsubmit.co/${BUSINESS.email}`;
+const thankYouUrl = `${BUSINESS.siteUrl}/thank-you`;
 ---
 
 <Layout
-  title="Contact Pool Tidal | Get a Free Pool Service Quote"
-  description="Get a free pool cleaning, repair, or service quote from Pool Tidal. Serving San Diego County."
+  title="Contact Pool Tidal | Get a Pool Service Quote"
+  description="Get a pool service quote from Pool Tidal — weekly cleaning, repair, or service. Serving San Diego County."
 >
   <section class="mx-auto max-w-5xl px-6 py-16">
     <span class="text-sm font-semibold uppercase tracking-wide text-primary">Contact</span>
-    <h1 class="mt-3 font-display text-3xl font-semibold text-ink md:text-4xl">Get a free quote</h1>
+    <h1 class="mt-3 font-display text-3xl font-semibold text-ink md:text-4xl">Get a Pool Service Quote</h1>
     <p class="mt-4 max-w-2xl text-lg text-muted">
       Tell us about your pool and where you're located, and we'll follow up with a plan and pricing.
     </p>
+    <p class="mt-2 max-w-2xl text-sm text-muted-soft">
+      No obligation. Tell us about the pool and we'll follow up with the next step.
+    </p>
 
     <div class="mt-10 grid gap-10 md:grid-cols-5">
-      <form action={formAction} method="POST" class="space-y-4 md:col-span-3">
+      <div class="rounded-2xl border-2 border-primary bg-canvas p-6 md:order-2 md:col-span-2">
+        <p class="text-sm font-semibold uppercase tracking-wide text-primary">Fastest option</p>
+        <a
+          href={BUSINESS.phoneHref}
+          onclick="window.trackEvent && window.trackEvent('phone_click', { location: 'contact-page' })"
+          class="mt-3 flex items-center gap-3 rounded-full bg-primary px-5 py-4 text-lg font-semibold text-white hover:bg-primary-dark"
+        >
+          <Icon name="phone" class="h-5 w-5 flex-shrink-0" />
+          {BUSINESS.phone}
+        </a>
+        <p class="mt-3 text-sm text-muted">
+          Prefer to talk it through? Calling is the quickest way to get a plan started.
+        </p>
+
+        <div class="mt-6 border-t border-line pt-6">
+          <div class="flex items-center gap-3">
+            <Icon name="mail" class="h-5 w-5 text-primary" />
+            <a
+              href={BUSINESS.emailHref}
+              onclick="window.trackEvent && window.trackEvent('email_click', { location: 'contact-page' })"
+              class="font-medium text-ink hover:text-primary"
+            >
+              {BUSINESS.email}
+            </a>
+          </div>
+        </div>
+
+        <div class="mt-6 border-t border-line pt-6 text-sm text-muted">
+          Serving {LOCATIONS.length} cities and communities across {BUSINESS.serviceRegion}.
+          <a href="/locations" class="mt-2 block font-medium text-primary hover:text-primary-dark">
+            See all service areas &rarr;
+          </a>
+        </div>
+      </div>
+
+      <form
+        id="quote-form"
+        action={formAction}
+        method="POST"
+        class="space-y-4 md:order-1 md:col-span-3"
+      >
         <input type="hidden" name="_subject" value="New quote request from www.pooltidal.com" />
         <input type="hidden" name="_captcha" value="true" />
+        <input type="hidden" name="_next" value={thankYouUrl} />
         <input type="text" name="_honey" class="hidden" tabindex="-1" autocomplete="off" />
+
+        {/* Populated from sessionStorage by src/scripts/attribution.ts — blank if no campaign params were ever seen this session. */}
+        <input type="hidden" name="utm_source" id="utm_source" />
+        <input type="hidden" name="utm_medium" id="utm_medium" />
+        <input type="hidden" name="utm_campaign" id="utm_campaign" />
+        <input type="hidden" name="utm_content" id="utm_content" />
+        <input type="hidden" name="landing_page" id="landing_page" />
 
         <div class="grid gap-4 sm:grid-cols-2">
           <div>
@@ -36,6 +89,7 @@ const formAction = `https://formsubmit.co/${BUSINESS.email}`;
               id="name"
               name="name"
               type="text"
+              autocomplete="name"
               required
               class="mt-1 w-full rounded-lg border border-line bg-surface px-3 py-2 text-ink focus:border-primary focus:outline-none"
             />
@@ -46,6 +100,7 @@ const formAction = `https://formsubmit.co/${BUSINESS.email}`;
               id="phone"
               name="phone"
               type="tel"
+              autocomplete="tel"
               required
               class="mt-1 w-full rounded-lg border border-line bg-surface px-3 py-2 text-ink focus:border-primary focus:outline-none"
             />
@@ -58,7 +113,20 @@ const formAction = `https://formsubmit.co/${BUSINESS.email}`;
             id="email"
             name="email"
             type="email"
+            autocomplete="email"
             required
+            class="mt-1 w-full rounded-lg border border-line bg-surface px-3 py-2 text-ink focus:border-primary focus:outline-none"
+          />
+        </div>
+
+        <div>
+          <label for="address" class="text-sm font-medium text-ink">Address or ZIP code</label>
+          <input
+            id="address"
+            name="address"
+            type="text"
+            autocomplete="street-address"
+            placeholder="123 Main St or 92024"
             class="mt-1 w-full rounded-lg border border-line bg-surface px-3 py-2 text-ink focus:border-primary focus:outline-none"
           />
         </div>
@@ -72,7 +140,11 @@ const formAction = `https://formsubmit.co/${BUSINESS.email}`;
             class="mt-1 w-full rounded-lg border border-line bg-surface px-3 py-2 text-ink focus:border-primary focus:outline-none"
           >
             <option value="">Select your city</option>
-            {LOCATIONS.map((location) => <option value={location.name}>{location.name}</option>)}
+            {LOCATIONS.map((location) => (
+              <option value={location.name} data-slug={location.slug}>
+                {location.name}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -85,8 +157,12 @@ const formAction = `https://formsubmit.co/${BUSINESS.email}`;
             class="mt-1 w-full rounded-lg border border-line bg-surface px-3 py-2 text-ink focus:border-primary focus:outline-none"
           >
             <option value="">Select a service</option>
-            {SERVICES.map((service) => <option value={service.name}>{service.name}</option>)}
-            <option value="Not sure">Not sure yet</option>
+            {SERVICES.map((service) => (
+              <option value={service.name} data-slug={service.slug}>
+                {service.name}
+              </option>
+            ))}
+            <option value="Not sure" data-slug="not-sure">Not sure yet</option>
           </select>
         </div>
 
@@ -104,28 +180,110 @@ const formAction = `https://formsubmit.co/${BUSINESS.email}`;
           type="submit"
           class="rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white hover:bg-primary-dark"
         >
-          Request a Quote
+          Get My Pool Service Quote
         </button>
       </form>
-
-      <div class="space-y-4 md:col-span-2">
-        <div class="rounded-2xl border border-line bg-surface p-6">
-          <div class="flex items-center gap-3">
-            <Icon name="phone" class="h-5 w-5 text-primary" />
-            <a href={BUSINESS.phoneHref} class="font-medium text-ink hover:text-primary">{BUSINESS.phone}</a>
-          </div>
-          <div class="mt-3 flex items-center gap-3">
-            <Icon name="mail" class="h-5 w-5 text-primary" />
-            <a href={BUSINESS.emailHref} class="font-medium text-ink hover:text-primary">{BUSINESS.email}</a>
-          </div>
-        </div>
-        <div class="rounded-2xl border border-line bg-surface p-6 text-sm text-muted">
-          Serving {LOCATIONS.length} cities and communities across {BUSINESS.serviceRegion}.
-          <a href="/locations" class="mt-2 block font-medium text-primary hover:text-primary-dark">
-            See all service areas &rarr;
-          </a>
-        </div>
-      </div>
     </div>
   </section>
 </Layout>
+
+<script>
+  import { getAttribution } from '../scripts/attribution';
+
+  // Fill in whatever utm/landing-page attribution this session captured
+  // (see src/scripts/attribution.ts) — fields stay blank if none was ever
+  // seen, which FormSubmit just omits from the email.
+  const attribution = getAttribution();
+  (['utm_source', 'utm_medium', 'utm_campaign', 'utm_content'] as const).forEach((key) => {
+    const field = document.getElementById(key) as HTMLInputElement | null;
+    if (field && attribution[key]) field.value = attribution[key] as string;
+  });
+  const landingPageField = document.getElementById('landing_page') as HTMLInputElement | null;
+  if (landingPageField && attribution.landing_path) landingPageField.value = attribution.landing_path;
+
+  // Preselect service/city from ?service=<slug> and/or ?city=<slug> query
+  // params (e.g. links from a service or location page), matched against
+  // each <option>'s data-slug rather than its visible value/label.
+  const params = new URLSearchParams(window.location.search);
+  const serviceSlug = params.get('service');
+  const citySlug = params.get('city');
+  const gallons = params.get('gallons');
+
+  function preselect(selectId: string, slug: string | null) {
+    if (!slug) return;
+    const select = document.getElementById(selectId) as HTMLSelectElement | null;
+    if (!select) return;
+    const match = Array.from(select.options).find((opt) => opt.dataset.slug === slug);
+    if (match) select.value = match.value;
+  }
+
+  preselect('service', serviceSlug);
+  preselect('location', citySlug);
+
+  // Carry context from the pool volume calculator and/or the pool service
+  // cost calculator into the message field so it reaches us with the
+  // request, without adding dedicated form fields or making the visitor
+  // re-type anything they already told us.
+  const summaryLines: string[] = [];
+
+  if (gallons && /^\d+$/.test(gallons)) {
+    summaryLines.push(`Estimated pool volume from the pool volume calculator: ${Number(gallons).toLocaleString()} gallons.`);
+  }
+
+  const POOL_SIZE_LABEL: Record<string, string> = {
+    small: 'Small',
+    medium: 'Medium',
+    large: 'Large',
+    'not-sure': 'Not sure',
+  };
+  const POOL_TYPE_LABEL: Record<string, string> = {
+    chlorine: 'Chlorine',
+    saltwater: 'Saltwater',
+    'not-sure': 'Not sure',
+  };
+  const CONDITION_LABEL: Record<string, string> = {
+    clear: 'Clear',
+    'slightly-cloudy': 'Slightly cloudy',
+    'green-algae': 'Green/algae',
+    'not-serviced-recently': "Hasn't been serviced recently",
+    'not-sure': 'Not sure',
+  };
+
+  const poolSize = params.get('poolSize');
+  const poolType = params.get('poolType');
+  const spa = params.get('spa');
+  const condition = params.get('condition');
+  const estRange = params.get('estRange');
+
+  if (poolSize || poolType || spa || condition || estRange) {
+    const details: string[] = [];
+    if (poolSize && POOL_SIZE_LABEL[poolSize]) details.push(`Pool size: ${POOL_SIZE_LABEL[poolSize]}`);
+    if (poolType && POOL_TYPE_LABEL[poolType]) details.push(`Pool type: ${POOL_TYPE_LABEL[poolType]}`);
+    if (spa === 'yes') details.push('Has an attached spa');
+    if (condition && CONDITION_LABEL[condition]) details.push(`Current condition: ${CONDITION_LABEL[condition]}`);
+    if (estRange) details.push(`Calculator estimate shown: $${estRange.replace('-', '–')}`);
+    if (details.length > 0) {
+      summaryLines.push(`From the pool service cost calculator — ${details.join('; ')}.`);
+    }
+  }
+
+  if (summaryLines.length > 0) {
+    const message = document.getElementById('message') as HTMLTextAreaElement | null;
+    if (message && !message.value) {
+      message.value = summaryLines.join('\n');
+    }
+  }
+
+  // Fire quote_form_started once, on the first real interaction with the form.
+  const form = document.getElementById('quote-form');
+  let started = false;
+  form?.addEventListener(
+    'focusin',
+    () => {
+      if (started) return;
+      started = true;
+      window.trackEvent?.('quote_form_started');
+    },
+    { once: true }
+  );
+</script>

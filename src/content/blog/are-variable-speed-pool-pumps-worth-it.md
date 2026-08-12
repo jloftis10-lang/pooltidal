@@ -3,6 +3,8 @@ title: "Are Variable-Speed Pool Pumps Worth the Upgrade?"
 description: "Variable-speed pumps cost more upfront than single-speed pumps. Here's what you actually get for the difference — and how to think about whether it's worth it."
 publishDate: 2026-08-18
 tags: ["Equipment", "Cost Savings"]
+cluster: "Pool Equipment"
+relatedService: "equipment-installation"
 ---
 
 If your pump has failed or you're planning ahead for when it will, you'll run into this decision: stick with a standard single-speed pump, or spend more upfront on a variable-speed model. Here's what actually differs between them.

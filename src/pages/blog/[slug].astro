@@ -3,6 +3,7 @@ import { getCollection, render, type CollectionEntry } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import CTASection from '../../components/CTASection.astro';
 import BlogCard from '../../components/BlogCard.astro';
+import BlogServiceCTA from '../../components/BlogServiceCTA.astro';
 import { BUSINESS } from '../../lib/business';
 
 export async function getStaticPaths() {
@@ -107,6 +108,8 @@ const breadcrumbSchema = {
     <div class="prose mt-8">
       <Content />
     </div>
+
+    {post.data.relatedService && <BlogServiceCTA serviceSlug={post.data.relatedService} />}
 
     {
       relatedPosts.length > 0 && (

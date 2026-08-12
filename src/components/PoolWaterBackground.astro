@@ -10,7 +10,7 @@ const { class: className = '' } = Astro.props;
 ---
 
 <div class={`pool-water absolute inset-0 overflow-hidden ${className}`} aria-hidden="true">
-  <svg class="h-full w-full" preserveAspectRatio="xMidYMid slice">
+  <svg id="pool-water-svg" class="h-full w-full" preserveAspectRatio="xMidYMid slice">
     <defs>
       <filter id="caustics" x="-20%" y="-20%" width="140%" height="140%">
         <feTurbulence type="fractalNoise" baseFrequency="0.045 0.09" numOctaves="2" seed="11" result="noise">
@@ -73,3 +73,13 @@ const { class: className = '' } = Astro.props;
 
   <div class="absolute inset-0 bg-gradient-to-t from-[#062a31]/75 via-[#062a31]/15 to-[#062a31]/25"></div>
 </div>
+
+<script>
+  // Respect prefers-reduced-motion: the SMIL <animate> elements aren't
+  // covered by CSS's reduced-motion handling, so pause them via the SVG
+  // DOM API directly when the user has that preference set.
+  const svg = document.getElementById('pool-water-svg') as SVGSVGElement | null;
+  if (svg && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    svg.pauseAnimations();
+  }
+</script>

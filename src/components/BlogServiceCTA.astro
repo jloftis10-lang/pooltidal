@@ -1,0 +1,34 @@
+---
+import Icon from './Icon.astro';
+import { getService } from '../lib/services';
+
+interface Props {
+  serviceSlug: string;
+}
+
+const { serviceSlug } = Astro.props;
+const service = getService(serviceSlug);
+---
+
+{
+  service && (
+    <div class="mt-10 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-line bg-surface p-5">
+      <div class="flex items-center gap-3">
+        <span class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-canvas text-primary">
+          <Icon name={service.icon} class="h-5 w-5" />
+        </span>
+        <div>
+          <p class="text-sm text-muted">Related service</p>
+          <p class="font-medium text-ink">{service.name}</p>
+        </div>
+      </div>
+      <a
+        href={`/services/${service.slug}`}
+        onclick={`window.trackEvent && window.trackEvent('service_cta_click', { service: '${service.slug}', location: 'blog-post' })`}
+        class="rounded-full bg-primary px-5 py-2 text-sm font-semibold text-white hover:bg-primary-dark"
+      >
+        See {service.name} &rarr;
+      </a>
+    </div>
+  )
+}

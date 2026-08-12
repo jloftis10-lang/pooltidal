@@ -1,0 +1,39 @@
+---
+// Renders nothing at all when REVIEWS is empty — see reviews.ts for why
+// that array must never be filled with placeholder/sample entries.
+import { REVIEWS } from '../lib/reviews';
+
+const stars = (rating: number) => '★'.repeat(Math.round(rating)) + '☆'.repeat(5 - Math.round(rating));
+---
+
+{
+  REVIEWS.length > 0 && (
+    <section class="mx-auto max-w-6xl px-6 py-16">
+      <span class="text-sm font-semibold uppercase tracking-wide text-primary">Customers say</span>
+      <h2 class="mt-3 font-display text-2xl font-semibold text-ink md:text-3xl">What it's like to work with us</h2>
+
+      <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {REVIEWS.map((review) => (
+          <figure class="flex flex-col gap-3 rounded-2xl border border-line bg-surface p-6">
+            <div aria-hidden="true" class="text-accent-strong">
+              {stars(review.rating)}
+            </div>
+            <span class="sr-only">{review.rating} out of 5 stars</span>
+            <blockquote class="text-sm text-muted">"{review.reviewText}"</blockquote>
+            <figcaption class="mt-auto flex items-center justify-between pt-2 text-xs text-muted-soft">
+              <span class="font-medium text-ink">{review.reviewerName}</span>
+              <span>
+                {review.source}
+                {review.sourceUrl && (
+                  <a href={review.sourceUrl} target="_blank" rel="noopener noreferrer" class="ml-1 text-primary hover:text-primary-dark">
+                    &rarr;
+                  </a>
+                )}
+              </span>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+    </section>
+  )
+}

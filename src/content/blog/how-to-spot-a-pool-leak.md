@@ -3,6 +3,8 @@ title: "How to Tell If Your Pool Has a Leak: 7 Warning Signs"
 description: "Losing water doesn't always mean a leak — but sometimes it does. Here are 7 signs your pool may be leaking and a simple test you can run yourself."
 publishDate: 2026-07-23
 tags: ["Leak Detection", "Pool Repair"]
+cluster: "Pool Problems"
+relatedService: "pool-repair"
 ---
 
 Every pool loses some water to evaporation — that's normal, especially during San Diego's hot, dry summer stretches. The question is how much is normal evaporation and how much might be an actual leak. Here are the signs worth paying attention to, and a simple way to check it yourself before calling in a professional.

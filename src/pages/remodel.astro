@@ -1,0 +1,107 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+import { BUSINESS } from '../lib/business';
+import { POOLSAVR } from '../lib/poolsavr';
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: BUSINESS.siteUrl },
+    { '@type': 'ListItem', position: 2, name: 'Pool Remodeling', item: `${BUSINESS.siteUrl}/remodel` },
+  ],
+};
+
+const steps = [
+  {
+    title: 'Measure your pool',
+    description: "Use PoolSavr's tools to get your pool's measurements — no site visit required to get started.",
+  },
+  {
+    title: 'Get a free estimate',
+    description: 'Submit your measurements and get a quick, no-cost estimate for your remodel.',
+  },
+  {
+    title: 'Talk it through with PoolSavr',
+    description: "PoolSavr's team follows up to walk through options, scope, and next steps for your project.",
+  },
+];
+---
+
+<Layout
+  title="Pool Remodeling in San Diego | PoolSavr"
+  description="Thinking about a pool remodel? PoolSavr — our sister company — helps San Diego homeowners measure their pool and get a quick, free remodel estimate."
+>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbSchema)} />
+
+  <section class="mx-auto max-w-3xl px-6 py-16">
+    <nav class="text-sm text-muted">
+      <a href="/" class="hover:text-primary">Home</a> /
+      <span class="text-ink">Pool Remodeling</span>
+    </nav>
+
+    <span class="mt-4 block text-sm font-semibold uppercase tracking-wide text-primary">Pool Remodeling</span>
+    <h1 class="mt-3 font-display text-3xl font-semibold text-ink md:text-4xl">
+      Thinking About a Pool Remodel?
+    </h1>
+    <p class="mt-4 text-lg text-muted">
+      Pool Tidal handles weekly cleaning, repairs, and equipment — not full remodels. For that, we
+      point our customers to <strong class="text-ink">{POOLSAVR.name}</strong>, our sister company
+      dedicated to pool remodeling in San Diego.
+    </p>
+
+    <div class="mt-10 rounded-2xl border-2 border-primary bg-canvas p-6 text-center">
+      <p class="font-display text-lg font-semibold text-ink">Measure your pool. Get a free estimate.</p>
+      <p class="mt-2 text-sm text-muted">
+        PoolSavr makes it quick to get started — measure your pool and get a free remodel estimate
+        without waiting on a site visit.
+      </p>
+      <a
+        href={POOLSAVR.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        onclick="window.trackEvent && window.trackEvent('remodel_cta_click', { location: 'remodel-page-primary' })"
+        class="mt-5 inline-flex items-center gap-2 rounded-full bg-accent-strong px-6 py-3 text-sm font-semibold text-white hover:opacity-90"
+      >
+        Get My Free Remodel Estimate
+        <Icon name="external-link" class="h-4 w-4 flex-shrink-0" />
+      </a>
+      <p class="mt-3 text-xs text-muted-soft">
+        You'll be taken to poolsavr.com — a separate site from Pool Tidal.
+      </p>
+    </div>
+
+    <h2 class="mt-12 font-display text-xl font-semibold text-ink">How it works</h2>
+    <div class="mt-6 grid gap-8 sm:grid-cols-3">
+      {
+        steps.map((step, i) => (
+          <div>
+            <span class="flex h-10 w-10 items-center justify-center rounded-full bg-primary font-display text-base font-semibold text-white">
+              {i + 1}
+            </span>
+            <h3 class="mt-3 font-display text-base font-semibold text-ink">{step.title}</h3>
+            <p class="mt-2 text-sm text-muted">{step.description}</p>
+          </div>
+        ))
+      }
+    </div>
+
+    <h2 class="mt-12 font-display text-xl font-semibold text-ink">Remodel vs. repair vs. maintenance</h2>
+    <p class="mt-4 text-muted">
+      Not sure which one you need? As a general rule: <a href="/services/weekly-cleaning-maintenance" class="font-medium text-primary hover:text-primary-dark">weekly service</a>
+      keeps a healthy pool healthy, <a href="/services/pool-repair" class="font-medium text-primary hover:text-primary-dark">repair</a>
+      fixes something that's broken, and a remodel is a bigger project — resurfacing, renovating, or
+      significantly changing the pool itself. If you're not sure which applies to you,
+      <a href={BUSINESS.phoneHref} class="font-medium text-primary hover:text-primary-dark">give us a call</a>
+      and we'll point you in the right direction.
+    </p>
+
+    <p class="mt-10 text-sm text-muted-soft">
+      PoolSavr is a separate company from Pool Tidal, under common ownership. Remodel estimates,
+      scheduling, and work are handled directly by PoolSavr — visit
+      <a href={POOLSAVR.url} target="_blank" rel="noopener noreferrer" class="font-medium text-primary hover:text-primary-dark">poolsavr.com</a>
+      for details on their process and service area.
+    </p>
+  </section>
+</Layout>

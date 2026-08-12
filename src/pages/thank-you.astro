@@ -1,0 +1,71 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+import { BUSINESS } from '../lib/business';
+---
+
+<Layout
+  title="Thank You | Pool Tidal"
+  description="Thanks for requesting a pool service quote from Pool Tidal. We'll follow up shortly."
+  noindex
+>
+  <section class="mx-auto max-w-2xl px-6 py-20 text-center">
+    <span class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 text-primary">
+      <Icon name="check" class="h-7 w-7" />
+    </span>
+    <h1 class="mt-6 font-display text-3xl font-semibold text-ink md:text-4xl">
+      Thanks — we received your pool service request.
+    </h1>
+    <p class="mt-4 text-lg text-muted">
+      We'll review the details and follow up with next steps — a plan, pricing, or a couple of
+      questions if we need more information about your pool.
+    </p>
+
+    <div class="mt-10 grid gap-6 text-left sm:grid-cols-2">
+      <div class="rounded-2xl border border-line bg-surface p-6">
+        <h2 class="font-display text-base font-semibold text-ink">What happens next</h2>
+        <ul class="mt-3 space-y-2 text-sm text-muted">
+          <li>We review what you told us about your pool and location.</li>
+          <li>We follow up — by phone or email, whichever you gave us — with a plan and pricing.</li>
+          <li>If anything's unclear, we'll ask before quoting rather than guess.</li>
+        </ul>
+      </div>
+      <div class="rounded-2xl border border-line bg-surface p-6">
+        <h2 class="font-display text-base font-semibold text-ink">What's helpful to have ready</h2>
+        <ul class="mt-3 space-y-2 text-sm text-muted">
+          <li>Gate or yard access details, if we'd need them for a visit.</li>
+          <li>Roughly how long it's been since the pool was last serviced.</li>
+          <li>Any equipment brand names, if you happen to know them.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-8 rounded-2xl border border-line bg-canvas p-6">
+      <p class="text-sm font-semibold uppercase tracking-wide text-primary">Need to reach us sooner?</p>
+      <a
+        href={BUSINESS.phoneHref}
+        onclick="window.trackEvent && window.trackEvent('phone_click', { location: 'thank-you' })"
+        class="mt-3 inline-flex items-center gap-3 rounded-full bg-primary px-6 py-3 text-lg font-semibold text-white hover:bg-primary-dark"
+      >
+        <Icon name="phone" class="h-5 w-5 flex-shrink-0" />
+        {BUSINESS.phone}
+      </a>
+    </div>
+
+    <div class="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm">
+      <a href="/services" class="font-medium text-primary hover:text-primary-dark">
+        Browse our services &rarr;
+      </a>
+      <a href="/pool-service-cost" class="font-medium text-primary hover:text-primary-dark">
+        Estimate service cost &rarr;
+      </a>
+      <a href="/pool-volume-calculator" class="font-medium text-primary hover:text-primary-dark">
+        Try the pool volume calculator &rarr;
+      </a>
+    </div>
+  </section>
+
+  <script>
+    window.trackEvent?.('quote_form_submitted');
+  </script>
+</Layout>
