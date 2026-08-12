@@ -13,6 +13,7 @@ import { SERVICES, getService } from '../lib/services';
 import { LOCATIONS } from '../lib/locations';
 import { BUSINESS } from '../lib/business';
 import { DIFFERENTIATORS } from '../lib/differentiators';
+import { POOLSAVR } from '../lib/poolsavr';
 
 const featuredLocations = LOCATIONS.slice(0, 8);
 const weeklyService = getService('weekly-cleaning-maintenance');
@@ -231,6 +232,26 @@ const steps = [
 
       <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {SERVICES.map((service) => <ServiceCard service={service} />)}
+      </div>
+
+      <div class="mt-8 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-line bg-canvas p-6">
+        <div>
+          <p class="font-display text-base font-semibold text-ink">{POOLSAVR.navLabel}</p>
+          <p class="mt-1 text-sm text-muted">
+            Pool Tidal doesn't do full remodels — for that, our sister company {POOLSAVR.name} can
+            measure your pool and get you a quick, free estimate.
+          </p>
+        </div>
+        <a
+          href={POOLSAVR.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          onclick="window.trackEvent && window.trackEvent('remodel_cta_click', { location: 'homepage-services' })"
+          class="inline-flex flex-shrink-0 items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white hover:bg-primary-dark"
+        >
+          Get a Free Remodel Estimate
+          <Icon name="external-link" class="h-4 w-4 flex-shrink-0" />
+        </a>
       </div>
     </div>
   </section>

@@ -16,7 +16,8 @@ interface Props {
     | 'chevron-down'
     | 'droplet'
     | 'menu'
-    | 'close';
+    | 'close'
+    | 'external-link';
   class?: string;
 }
 
@@ -47,6 +48,7 @@ const paths: Record<Props['name'], string> = {
   droplet: 'M12 2.69 17.66 8.35a8 8 0 1 1-11.31 0L12 2.69z',
   menu: 'M3 6h18M3 12h18M3 18h18',
   close: 'M18 6 6 18M6 6l12 12',
+  'external-link': 'M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14 21 3',
 };
 ---
 
