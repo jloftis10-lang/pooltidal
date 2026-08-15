@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import Icon from '../components/Icon.astro';
 import { BUSINESS } from '../lib/business';
+import PoolSavrCTA from '../components/PoolSavrCTA.astro';
 ---
 
 <Layout
@@ -50,6 +51,15 @@ import { BUSINESS } from '../lib/business';
         <Icon name="phone" class="h-5 w-5 flex-shrink-0" />
         {BUSINESS.phone}
       </a>
+    </div>
+
+    <div class="mt-8 text-left">
+      <PoolSavrCTA
+        source="thank_you"
+        heading="Also thinking about a larger pool project?"
+        body="Your Pool Tidal service request is already on its way. If you are separately considering resurfacing, tile, coping, decking, or a full renovation, you can also start a remodel cost estimate with PoolSavr."
+        compact
+      />
     </div>
 
     <div class="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm">

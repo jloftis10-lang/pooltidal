@@ -4,7 +4,7 @@ import Layout from '../../layouts/Layout.astro';
 import BlogCard from '../../components/BlogCard.astro';
 import CTASection from '../../components/CTASection.astro';
 
-const CLUSTERS = ['Pool Maintenance', 'Pool Equipment', 'Pool Problems', 'San Diego Pool Care'] as const;
+const CLUSTERS = ['Pool Remodeling & Projects', 'Pool Maintenance', 'Pool Equipment', 'Pool Problems', 'San Diego Pool Care'] as const;
 
 const allPosts = await getCollection('blog', ({ data }) => !data.draft);
 const posts = allPosts.sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
@@ -17,14 +17,14 @@ const groups = CLUSTERS.map((cluster) => ({
 
 <Layout
   title="Pool Care Tips & Advice | Pool Tidal Blog"
-  description="Practical pool maintenance and leak detection advice from Pool Tidal, serving San Diego County."
+  description="Practical San Diego pool maintenance, repair, equipment, and remodeling-planning guidance from Pool Tidal."
 >
   <section class="mx-auto max-w-6xl px-6 py-16">
     <span class="text-sm font-semibold uppercase tracking-wide text-primary">Blog</span>
     <h1 class="mt-3 font-display text-3xl font-semibold text-ink md:text-4xl">Pool care tips & advice</h1>
     <p class="mt-4 max-w-2xl text-lg text-muted">
-      Practical guidance on keeping your pool healthy, catching problems early, and knowing when to
-      call in a professional — from the team servicing pools across San Diego County.
+      Practical guidance on keeping your pool healthy, catching problems early, and planning larger
+      pool projects — from a San Diego pool-service perspective.
     </p>
 
     {

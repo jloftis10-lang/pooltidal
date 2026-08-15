@@ -12,7 +12,7 @@ export type TrackedEvent =
   | 'cost_calculator_started'
   | 'cost_calculator_completed'
   | 'exact_quote_requested'
-  | 'remodel_cta_click';
+  | 'poolsavr_cta_click';
 
 type EventProps = Record<string, string | number | boolean>;
 

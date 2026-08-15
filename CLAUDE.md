@@ -180,10 +180,15 @@ matching the rest of the site's no-framework approach. The fixed event
 vocabulary is `phone_click`, `email_click`, `quote_cta_click`,
 `quote_form_started`, `quote_form_submitted`, `service_cta_click`,
 `location_cta_click`, `calculator_completed`, `cost_calculator_started`,
-`cost_calculator_completed`, `exact_quote_requested` — reuse one of these
+`cost_calculator_completed`, `exact_quote_requested`, `poolsavr_cta_click` — reuse one of these
 rather than inventing a new event name, and **never pass name, phone,
 email, address, or message text as an event property** — only non-PII
 context like a service/location slug.
+
+PoolSavr outbound referrals use `poolsavr_cta_click` with a non-PII `source`
+property. Build every outbound URL with `getPoolSavrUrl()` from
+`src/lib/poolsavr.ts` so the shared `pooltidal / referral / remodel_funnel`
+UTMs and page-level `utm_content` stay consistent.
 
 `src/scripts/attribution.ts` (also imported once in `Layout.astro`)
 captures `utm_source`/`utm_medium`/`utm_campaign`/`utm_content` and the

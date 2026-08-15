@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import Icon from '../../components/Icon.astro';
 import CTASection from '../../components/CTASection.astro';
+import PoolSavrCTA from '../../components/PoolSavrCTA.astro';
 import { LOCATIONS, getNearbyLocations, REGION_LABELS } from '../../lib/locations';
 import { SERVICES } from '../../lib/services';
 import { BUSINESS } from '../../lib/business';
@@ -143,6 +144,15 @@ const faqSchema = location.faq && {
           ))
         }
       </div>
+    </div>
+
+    <div class="mt-10">
+      <PoolSavrCTA
+        source={`location_${location.slug}`}
+        heading={`Planning a pool remodel in ${location.name}?`}
+        body={`Pool Tidal provides local cleaning, repair, and equipment service in ${location.name}. For resurfacing, tile, coping, decking, or a broader renovation, start a separate project estimate with PoolSavr.`}
+        compact
+      />
     </div>
 
     {

@@ -12,6 +12,14 @@ Add new posts using the existing frontmatter shape (`src/content.config.ts`):
 (optional). See `src/components/BlogServiceCTA.astro` for how `relatedService`
 surfaces a compact CTA at the end of the post.
 
+## Pool Remodeling & Projects — published cluster
+
+The remodel-intent cluster is now live. Its pillar is **Pool Remodel Cost in
+San Diego**, supported by articles about resurfacing, tile and coping, decking,
+repair-versus-remodel decisions, timelines, planning, and coordinated equipment
+upgrades. These posts use `poolSavrSource` for a contextual, attributed handoff
+while preserving Pool Tidal's service-first conversion path.
+
 ## How to use this list
 
 Each row is: **Topic** — working title idea, the **intent** a searcher has,
