@@ -10,7 +10,7 @@ const blog = defineCollection({
     updatedDate: z.coerce.date().optional(),
     tags: z.array(z.string()).default([]),
     draft: z.boolean().default(false),
-    cluster: z.enum(['Pool Maintenance', 'Pool Equipment', 'Pool Problems', 'San Diego Pool Care']),
+    cluster: z.enum(['Pool Maintenance', 'Pool Equipment', 'Pool Problems', 'San Diego Pool Care', 'Pool Remodeling & Projects']),
     // Slug of the related service in src/lib/services.ts, for the
     // compact post -> service CTA. Optional so a post can omit it.
     relatedService: z.string().optional(),
@@ -18,6 +18,14 @@ const blog = defineCollection({
     poolSavrSource: z.enum([
       'blog_variable_speed_pumps',
       'blog_saltwater_vs_chlorine',
+      'blog_remodel_cost_san_diego',
+      'blog_resurfacing_cost_san_diego',
+      'blog_tile_coping_replacement',
+      'blog_pool_deck_options',
+      'blog_repair_vs_remodel',
+      'blog_remodel_timeline',
+      'blog_remodel_checklist',
+      'blog_remodel_equipment_upgrades',
     ]).optional(),
   }),
 });

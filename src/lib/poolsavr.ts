@@ -16,6 +16,14 @@ export type PoolSavrSource =
   | 'service_equipment_installation'
   | 'blog_variable_speed_pumps'
   | 'blog_saltwater_vs_chlorine'
+  | 'blog_remodel_cost_san_diego'
+  | 'blog_resurfacing_cost_san_diego'
+  | 'blog_tile_coping_replacement'
+  | 'blog_pool_deck_options'
+  | 'blog_repair_vs_remodel'
+  | 'blog_remodel_timeline'
+  | 'blog_remodel_checklist'
+  | 'blog_remodel_equipment_upgrades'
   | `location_${string}`
   | 'thank_you';
 
