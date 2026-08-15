@@ -4,6 +4,7 @@ import Layout from '../../layouts/Layout.astro';
 import Icon from '../../components/Icon.astro';
 import CTASection from '../../components/CTASection.astro';
 import BlogCard from '../../components/BlogCard.astro';
+import PoolSavrCTA from '../../components/PoolSavrCTA.astro';
 import { SERVICES } from '../../lib/services';
 import { LOCATIONS } from '../../lib/locations';
 import { BUSINESS } from '../../lib/business';
@@ -26,6 +27,11 @@ const relatedPosts = service.relatedPosts
 
 const quoteHref = `/contact?service=${service.slug}`;
 const serviceUrl = `${BUSINESS.siteUrl}/services/${service.slug}`;
+const poolSavrSource = service.slug === 'pool-repair'
+  ? 'service_pool_repair'
+  : service.slug === 'equipment-installation'
+    ? 'service_equipment_installation'
+    : undefined;
 
 const faqSchema = {
   '@context': 'https://schema.org',
@@ -104,6 +110,18 @@ const breadcrumbSchema = {
 
     <h2 class="mt-12 font-display text-xl font-semibold text-ink">Why it matters</h2>
     <p class="mt-4 text-muted">{service.whyItMatters}</p>
+
+    {
+      poolSavrSource && (
+        <div class="mt-10">
+          <PoolSavrCTA
+            source={poolSavrSource}
+            heading="Is this repair part of a larger renovation?"
+            body="Pool Tidal can diagnose and handle standalone repairs and equipment work. If your plans also include resurfacing, tile, coping, decking, or a broader remodel, PoolSavr provides a separate project-estimate path."
+          />
+        </div>
+      )
+    }
 
     <div class="mt-10 rounded-2xl border border-line bg-surface p-6">
       <h2 class="font-display text-lg font-semibold text-ink">Available across San Diego County</h2>

@@ -5,6 +5,7 @@ publishDate: 2026-08-04
 tags: ["Equipment", "Pool Maintenance"]
 cluster: "Pool Equipment"
 relatedService: "equipment-installation"
+poolSavrSource: "blog_saltwater_vs_chlorine"
 ---
 
 "Saltwater pool" is a bit of a misnomer — saltwater pools are still sanitized by chlorine. The difference is where that chlorine comes from: a saltwater system uses a salt cell to generate chlorine continuously from dissolved salt, instead of you adding chlorine tablets, liquid, or granules by hand. Both approaches work. The right one depends on what you'd rather manage.

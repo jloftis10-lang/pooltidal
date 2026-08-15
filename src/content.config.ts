@@ -14,6 +14,11 @@ const blog = defineCollection({
     // Slug of the related service in src/lib/services.ts, for the
     // compact post -> service CTA. Optional so a post can omit it.
     relatedService: z.string().optional(),
+    // Opt in only when the article naturally signals remodel/project intent.
+    poolSavrSource: z.enum([
+      'blog_variable_speed_pumps',
+      'blog_saltwater_vs_chlorine',
+    ]).optional(),
   }),
 });
 

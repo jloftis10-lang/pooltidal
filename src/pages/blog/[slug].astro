@@ -4,6 +4,7 @@ import Layout from '../../layouts/Layout.astro';
 import CTASection from '../../components/CTASection.astro';
 import BlogCard from '../../components/BlogCard.astro';
 import BlogServiceCTA from '../../components/BlogServiceCTA.astro';
+import PoolSavrCTA from '../../components/PoolSavrCTA.astro';
 import { BUSINESS } from '../../lib/business';
 
 export async function getStaticPaths() {
@@ -110,6 +111,19 @@ const breadcrumbSchema = {
     </div>
 
     {post.data.relatedService && <BlogServiceCTA serviceSlug={post.data.relatedService} />}
+
+    {
+      post.data.poolSavrSource && (
+        <div class="mt-8">
+          <PoolSavrCTA
+            source={post.data.poolSavrSource}
+            heading="Bundling this upgrade into a larger remodel?"
+            body="For a standalone equipment need, Pool Tidal can help. If the work is part of resurfacing, tile, coping, decking, or a broader renovation, PoolSavr offers a separate remodel-estimate path."
+            compact
+          />
+        </div>
+      )
+    }
 
     {
       relatedPosts.length > 0 && (

@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import Icon from '../components/Icon.astro';
 import { BUSINESS } from '../lib/business';
-import { POOLSAVR } from '../lib/poolsavr';
+import { POOLSAVR, getPoolSavrUrl } from '../lib/poolsavr';
 
 const breadcrumbSchema = {
   '@context': 'https://schema.org',
@@ -58,10 +58,10 @@ const steps = [
         without waiting on a site visit.
       </p>
       <a
-        href={POOLSAVR.url}
+        href={getPoolSavrUrl('remodel_page_primary')}
         target="_blank"
         rel="noopener noreferrer"
-        onclick="window.trackEvent && window.trackEvent('remodel_cta_click', { location: 'remodel-page-primary' })"
+        onclick="window.trackEvent && window.trackEvent('poolsavr_cta_click', { source: 'remodel_page_primary' })"
         class="mt-5 inline-flex items-center gap-2 rounded-full bg-accent-strong px-6 py-3 text-sm font-semibold text-white hover:opacity-90"
       >
         Get My Free Remodel Estimate
@@ -100,7 +100,13 @@ const steps = [
     <p class="mt-10 text-sm text-muted-soft">
       PoolSavr is a separate company from Pool Tidal, under common ownership. Remodel estimates,
       scheduling, and work are handled directly by PoolSavr — visit
-      <a href={POOLSAVR.url} target="_blank" rel="noopener noreferrer" class="font-medium text-primary hover:text-primary-dark">poolsavr.com</a>
+      <a
+        href={getPoolSavrUrl('remodel_page_secondary')}
+        target="_blank"
+        rel="noopener noreferrer"
+        onclick="window.trackEvent && window.trackEvent('poolsavr_cta_click', { source: 'remodel_page_secondary' })"
+        class="font-medium text-primary hover:text-primary-dark"
+      >poolsavr.com</a>
       for details on their process and service area.
     </p>
   </section>
