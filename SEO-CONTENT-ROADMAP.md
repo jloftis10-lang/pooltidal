@@ -32,7 +32,7 @@ someone"), not on any specific keyword volume claim.
 
 | Topic | Intent | Related service | Priority |
 |---|---|---|---|
-| What does pool cleaning cost in San Diego? | Commercial ("how much will this cost me") | `weekly-cleaning-maintenance` | High |
+| ~~What does pool cleaning cost in San Diego?~~ — published as `pool-cleaning-cost-san-diego.md` | Commercial ("how much will this cost me") | `weekly-cleaning-maintenance` | Done |
 | Weekly vs. biweekly pool service: which does your pool need? | Commercial / comparison | `weekly-cleaning-maintenance` | High |
 | How often should you clean your pool filter? | Informational, maintenance-adjacent | `weekly-cleaning-maintenance` | Medium |
 | Why is my pool's pH rising and how do I fix it? | Informational / troubleshooting | `weekly-cleaning-maintenance` | Medium |
@@ -42,7 +42,7 @@ someone"), not on any specific keyword volume claim.
 
 | Topic | Intent | Related service | Priority |
 |---|---|---|---|
-| Pump running but no water flow: causes and what to check first | Troubleshooting, pre-repair-call | `pool-repair` | High |
+| ~~Pump running but no water flow: causes and what to check first~~ — published as `pump-running-no-water-flow.md` | Troubleshooting, pre-repair-call | `pool-repair` | Done |
 | How long does a pool pump actually last? | Informational, replacement-timing | `equipment-installation` | Medium |
 | Pentair vs. Hayward vs. Jandy: how to think about equipment brands | Comparison / consideration-stage | `equipment-installation` | Medium |
 | Pool pump run schedules and San Diego electricity rates | Informational, cost-savings angle (time-of-use rates) | `equipment-installation` | Medium |
